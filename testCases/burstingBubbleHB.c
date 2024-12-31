@@ -25,16 +25,6 @@
 #include "axi.h"
 #include "navier-stokes/centered.h"
 
-/*
-see: V. Sanjay, Zenodo, DOI: 10.5281/zenodo.14210635 (2024) for details
-*/
-// #define _SCALAR // uncomment to use the scalar version of the viscoelastic code
-#if !_SCALAR
-#include "log-conform-viscoelastic.h" 
-#else 
-#include "log-conform-viscoelastic-scalar-2D.h"
-#endif
-
 /**
  * Simulation Parameters:
  * FILTERED: Enable density and viscosity jump smoothing
@@ -42,11 +32,10 @@ see: V. Sanjay, Zenodo, DOI: 10.5281/zenodo.14210635 (2024) for details
  * fErr: Error tolerance for volume fraction (1e-3)
  * KErr: Error tolerance for curvature calculation (1e-6)
  * VelErr: Error tolerance for velocity field (1e-3)
- * AErr: Error tolerance for conformation tensor (1e-3)
  * Ldomain: Domain size in characteristic lengths (8)
 */
 #define FILTERED // Smear density and viscosity jumps
-#include "two-phaseVE.h"
+#include "two-phaseVP-HB.h"
 #include "navier-stokes/conserving.h"
 #include "tension.h"
 
@@ -59,7 +48,7 @@ see: V. Sanjay, Zenodo, DOI: 10.5281/zenodo.14210635 (2024) for details
 #define fErr (1e-3)                                 // error tolerance in f1 VOF
 #define KErr (1e-6)                                 // error tolerance in VoF curvature calculated using heigh function method (see adapt event)
 #define VelErr (1e-3)                               // error tolerances in velocity -- Use 1e-2 for low Oh and 1e-3 to 5e-3 for high Oh/moderate to high J
-#define AErr (1e-3)                             // error tolerances in conformation inside the liquid
+#define D2Err (1e-2)                             // error tolerances in conformation inside the liquid
 
 // Numbers!
 #define Ldomain 8
@@ -69,16 +58,11 @@ u.n[right] = neumann(0.);
 p[right] = dirichlet(0.);
 
 int MAXlevel;
-// Oh -> Solvent Ohnesorge number
-// Oha -> air Ohnesorge number
-// De -> Deborah number
-// Ec -> Elasto-capillary number
-
-double Oh, Oha, De, Ec, Bond, tmax;
-char nameOut[80], dumpFile[80];
+double OhK, Oha, J, Bond, tmax;
+char nameOut[80], dumpFile[80], logFile[80];
 
 int  main(int argc, char const *argv[]) {
-  dtmax = 1e-5; //  BEWARE of this for stability issues. 
+  
 
   L0 = Ldomain;
   origin (-L0/2., 0.);
@@ -86,18 +70,33 @@ int  main(int argc, char const *argv[]) {
   /*
   Values taken from the terminal. Here we use some representative values. In production run, you can pass it from the command line.
   */
-  MAXlevel = 10; //atoi(argv[1]);
-  De = 0.1; //atof(argv[2]); // Use a value of 1e30 to simulate the De \to \infty limit. 
-  Ec = 0.01; //atof(argv[3]);
-  Oh = 1e-2; //atof(argv[4]);
-  Bond = 1e-3; //atof(argv[5]);
-  tmax = 1e0; //atof(argv[6]);
+  MAXlevel = 10; 
+  n = 0.5; 
+  OhK = 0.01;
+  J = 5e-1; 
+  Bond = 1e-3;
+  tmax = 2.5e0;
+  epsilon = 1e-2;
 
-  // Ensure that all the variables were transferred properly from the terminal or job script.
-  // if (argc < 7){
-  //   fprintf(ferr, "Lack of command line arguments. Check! Need %d more arguments\n", 7-argc);
-  //   return 1;
-  // }
+  /*
+  To get from the terminal:
+  // uncomment the following lines to get the arguments from the terminal
+
+  // // First ensure that all the variables were transferred properly from the terminal or job script.
+  if (argc < 7){
+    fprintf(ferr, "Lack of command line arguments. Check! Need %d more arguments\n", 7-argc);
+    return 1;
+  }
+
+  MAXlevel = atoi(argv[1]);
+  n = atof(argv[2]);
+  OhK = atof(argv[3]);
+  J = atof(argv[4]);
+  Bond = atof(argv[5]);
+  tmax = atof(argv[6]);
+
+  */
+
   init_grid (1 << 5);
   // Create a folder named intermediate where all the simulation snapshots are stored.
   char comm[80];
@@ -105,6 +104,8 @@ int  main(int argc, char const *argv[]) {
   system(comm);
   // Name of the restart file. See writingFiles event.
   sprintf (dumpFile, "restart");
+  // Name of the log file. See logWriting event.
+  sprintf (logFile, "logData.dat");
 
 /**
  * Physical Properties:
@@ -119,10 +120,10 @@ int  main(int argc, char const *argv[]) {
  * Bond: Bond number
 */
   rho1 = 1., rho2 = 1e-3;
-  Oha = 2e-2 * Oh;
-  mu1 = Oh, mu2 = Oha;
-  lambda1 = De; lambda2 = 0.;
-  G1 = Ec; G2 = 0.;
+  Oha = 2e-2 * OhK;
+  mu1 = OhK, mu2 = Oha;
+
+  tauy = J;
 
   f.sigma = 1.0;
 
@@ -181,15 +182,9 @@ event adapt(i++){
   scalar KAPPA[];
   curvature(f, KAPPA);
 
-  #if !_SCALAR
-   adapt_wavelet ((scalar *){f, u.x, u.y, conform_p.x.x, conform_p.y.y, conform_p.y.x, conform_qq, KAPPA},
-      (double[]){fErr, VelErr, VelErr, AErr, AErr, AErr, AErr, KErr},
-      MAXlevel, MAXlevel-6);
-  #else
-   adapt_wavelet ((scalar *){f, u.x, u.y, A11, A22, A12, AThTh, KAPPA},
-      (double[]){fErr, VelErr, VelErr, AErr, AErr, AErr, AErr, KErr},
-      MAXlevel, MAXlevel-6);
-  #endif
+  adapt_wavelet ((scalar *){f, u.x, u.y, D2, KAPPA},
+    (double[]){fErr, VelErr, VelErr, D2Err, KErr},
+    MAXlevel, MAXlevel-6);
 }
 
 /**
@@ -206,7 +201,7 @@ event writingFiles (t = 0; t += tsnap; t <= tmax) {
 */
 event end (t = end) {
   if (pid() == 0)
-    fprintf(ferr, "Level %d, De %2.1e, Ec %2.1e, Oh %2.1e, Oha %2.1e, Bo %4.3f\n", MAXlevel, De, Ec, Oh, Oha, Bond);
+    fprintf(ferr, "Level %d, n %2.1e, OhK %2.1e, Oha %2.1e, J %4.3f, Bo %4.3f\n", MAXlevel, n, OhK, Oha, J, Bond);
 }
 
 /**
@@ -225,15 +220,15 @@ event logWriting (i++) {
   if (pid() == 0) {
     static FILE * fp;
     if (i == 0) {
-      fprintf(ferr, "Level %d, De %2.1e, Ec %2.1e, Oh %2.1e, Oha %2.1e, Bo %4.3f\n", MAXlevel, De, Ec, Oh, Oha, Bond);
-      fprintf (ferr, "De Ec Oh i dt t ke\n");
-      fp = fopen ("log", "w");
-      fprintf(fp, "Level %d, De %2.1e, Ec %2.1e, Oh %2.1e, Oha %2.1e, Bo %4.3f\n", MAXlevel, De, Ec, Oh, Oha, Bond);
+      fprintf(ferr, "Level %d, n %2.1e, OhK %2.1e, Oha %2.1e, J %4.3f, Bo %4.3f\n", MAXlevel, n, OhK, Oha, J, Bond);
+      fprintf (ferr, "i dt t ke\n");
+      fp = fopen (logFile, "w");
+      fprintf(fp, "Level %d, n %2.1e, OhK %2.1e, Oha %2.1e, J %4.3f, Bo %4.3f\n", MAXlevel, n, OhK, Oha, J, Bond);
       fprintf (fp, "i dt t ke\n");
       fprintf (fp, "%d %g %g %g\n", i, dt, t, ke);
       fclose(fp);
     } else {
-      fp = fopen ("log", "a");
+      fp = fopen (logFile, "a");
       fprintf (fp, "%d %g %g %g\n", i, dt, t, ke);
       fclose(fp);
     }
@@ -244,7 +239,7 @@ event logWriting (i++) {
   if (ke > 1e2 && i > 1e1){
     if (pid() == 0){
       fprintf(ferr, "The kinetic energy blew up. Stopping simulation\n");
-      fp = fopen ("log", "a");
+      fp = fopen (logFile, "a");
       fprintf(fp, "The kinetic energy blew up. Stopping simulation\n");
       fclose(fp);
       dump(file=dumpFile);
@@ -257,7 +252,7 @@ event logWriting (i++) {
     if (pid() == 0){
       fprintf(ferr, "kinetic energy too small now! Stopping!\n");
       dump(file=dumpFile);
-      fp = fopen ("log", "a");
+      fp = fopen (logFile, "a");
       fprintf(fp, "kinetic energy too small now! Stopping!\n");
       fclose(fp);
       return 1;

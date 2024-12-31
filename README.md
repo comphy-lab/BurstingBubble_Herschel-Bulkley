@@ -1,6 +1,6 @@
-# Viscoelastic Worthington Jets & Droplets Produced by Bursting Bubbles
+# Herschel-Bulkley Worthington Jets & Droplets Produced by Bursting Bubbles
 
-This repository contains the simulation code and analysis for studying the dynamics of viscoelastic Worthington jets and droplets produced by bursting bubbles. The code uses the ElastoFlow framework to simulate bubble cavity collapse in viscoelastic media, examining how elastic modulus and relaxation time affect jet and droplet formation.
+This repository contains the simulation code and analysis for studying the dynamics of Herschel-Bulkley Worthington jets and droplets produced by bursting bubbles. The code uses the Basilisk framework to simulate bubble cavity collapse in non-Newtonian media, examining how power-law index, yield stress, and viscosity affect jet and droplet formation.
 
 The article can be found at: 
 
@@ -10,7 +10,7 @@ The article can be found at:
 
 ## Overview
 
-The project investigates how viscoelasticity influences bubble bursting dynamics by exploring the three-dimensional phase space of solvent Ohnesorge number, elastocapillary number, and Deborah number using volume of fluid-based finite volume simulations. The results demonstrate that polymer addition significantly influences the overall dynamics through the interplay of viscous and elastic effects.
+The project investigates how non-Newtonian behavior influences bubble bursting dynamics by exploring the phase space of effective Ohnesorge number, power-law index, and plasto-capillary number using volume of fluid-based finite volume simulations. The results demonstrate how shear-thinning/thickening behavior and yield stress significantly influence the overall dynamics through the interplay of viscous and plastic effects.
 
 ## Installation and Setup
 
@@ -24,7 +24,7 @@ To ensure you have the necessary tools and a fresh Basilisk installation, use th
 This script checks for Basilisk installation and compiles it if not present.
 
 ### OS Compatibility
-Designed for macOS. If you encounter issues on Linux, consider opening a GitHub issue.
+Designed for macOS. If you encounter issues on Linux, please open a GitHub issue.
 
 ### Dependencies
 - Basilisk C is fetched and built automatically.
@@ -50,9 +50,14 @@ The easiest way to compile and run the code is using the Makefile approach:
 cd testCases
 ```
 
-2. Compile and run using make:
+2. Compile and run using make (this runs the code interactively using the browser):
 ```bash
 CFLAGS=-DDISPLAY=-1 make burstingBubbleVE.tst
+```
+
+To run the code non-interactively, use the following command:
+```bash
+make burstingBubbleVE.tst
 ```
 
 ### Alternative Method: Direct Compilation
@@ -166,69 +171,11 @@ Make sure to have the necessary permissions to execute the script.
 
 If you use this code in your research, please cite:
 
-### Paper
-```bibtex
-@article{dixit2024viscoelastic,
-  title={Viscoelastic Worthington jets & droplets produced by bursting bubbles},
-  author={Dixit, Ayush K and Oratis, Alexandros and Zinelis, Konstantinos and Lohse, Detlef and Sanjay, Vatsal},
-  journal={arXiv preprint arXiv:2408.05089},
-  year={2024}
-}
-```
-
 ### Software
-```bibtex
-@software{vatsal_sanjay_2024_14210635,
-  author       = {Vatsal Sanjay},
-  title        = {{comphy-lab/Viscoelastic3D: 🌊 v2.5: ElastoFlow - 
-                   Complete 2D/3D Viscoelastic Framework}},
-  month        = nov,
-  year         = 2024,
-  publisher    = {Zenodo},
-  version      = {v2.5},
-  doi          = {10.5281/zenodo.14210635},
-  url          = {https://doi.org/10.5281/zenodo.14210635}
-}
-```
-
-## Features
-
-- Simulation of bubble cavity collapse in viscoelastic media
-- Analysis of Worthington jet formation and droplet ejection
-- Investigation of polymer effects through:
-  - Elastic modulus (elastocapillary number)
-  - Relaxation time (Deborah number)
-  - Viscous effects (Ohnesorge number)
-
-## Dependencies
-
-The code utilizes:
-- Basilisk C ([basilliskpopinet](http://basilisk.fr))
-- Volume of Fluid (VoF) method for interface tracking
-- Adaptive Mesh Refinement (AMR) with quadtree grids
-
-## Key Results
-
-The simulations reveal:
-1. Three distinct flow regimes:
-   - Jets forming droplets
-   - Jets without droplet formation
-   - Absence of jet formation
-2. Impact of viscoelasticity on:
-   - Capillary wave propagation
-   - Jet elongation and retraction
-   - Droplet formation and size
-
-## Additional Resources
-
-The `z_extras` directory contains supplementary materials and post-processing tools used in the analysis. This includes C-based data extraction utilities, Python visualization scripts, and analysis notebooks. These tools were used to process simulation outputs and generate figures for the study. For detailed documentation of these tools, see the [README](z_extras/README.md) in the `z_extras` directory.
+<!-- Add software citation when available -->
 
 ## Authors
 
-- Ayush K. Dixit (University of Twente), [a.k.dixit@utwente.nl](mailto:a.k.dixit@utwente.nl)
-- Alexandros Oratis (University of Twente), [a.oratis@utwente.nl](mailto:a.oratis@utwente.nl)
-- Konstantinos Zinelis (Imperial College London & MIT), [k.zinelis17@imperial.ac.uk](mailto:k.zinelis17@imperial.ac.uk)
-- Detlef Lohse (University of Twente & Max Planck Institute), [d.lohse@utwente.nl](mailto:d.lohse@utwente.nl)
 - Vatsal Sanjay (University of Twente), [vatsalsanjay@gmail.com](mailto:vatsalsanjay@gmail.com)
 
 ## License
