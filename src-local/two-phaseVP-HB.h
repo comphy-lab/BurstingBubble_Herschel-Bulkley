@@ -64,9 +64,9 @@ averages (i.e. harmonic). */
 #endif
 #ifndef mu
 // for Arithmetic mean, use this
-# define mu(muTemp, mu2, f)  (clamp(f,0.,1.)*(muTemp - mu2) + mu2)
+// # define mu(muTemp, mu2, f)  (clamp(f,0.,1.)*(muTemp - mu2) + mu2)
 // for Harmonic mean, use this
-// # define mu(muTemp, mu2, f) (1.0 / ((clamp(f,0.,1.) / muTemp) + ((1.0 - clamp(f,0.,1.)) / mu2)))
+# define mu(muTemp, mu2, f) (1.0 / ((clamp(f,0.,1.) / muTemp) + ((1.0 - clamp(f,0.,1.)) / mu2)))
 #endif
 
 /**
@@ -195,10 +195,10 @@ Reproduced from: [P.-Y. Lagrée's Sandbox](http://basilisk.fr/sandbox/M1EMN/Exem
 #if AXI
     D2temp += sq((u.y[0,0] + u.y[-1, 0])/(2*max(y, 1e-20))); // D22
 #endif
-    D2temp += sq((u.x[0,1] - u.x[0,-1] + u.x[-1,1] - u.x[-1,-1])/(2.*Delta)); // D33
-    D2temp += sq(0.5*( (u.y[0,1] - u.y[0,-1] + u.y[-1,1] - u.y[-1,-1])/Delta + 0.5*( (u.x[0,1] - u.x[0,-1] + u.x[-1,1] - u.x[-1,-1])/(2.*Delta) ))); // D13
+    D2temp += sq((u.x[] - u.x[-1,0])/Delta); // D33
+    D2temp += 2.0*sq(0.5*( (u.y[] - u.y[-1, 0])/Delta + 0.5*( (u.x[0,1] - u.x[0,-1] + u.x[-1,1] - u.x[-1,-1])/(2.*Delta) ) )); // D13
 
-    D2temp = sqrt(D2temp/2.);
+    D2temp = sqrt(D2temp/2.0);
 
     if (tauy > 0.){
       muTemp = tauy/(2.0*D2temp + epsilon) + mu1*pow((2.0*D2temp + epsilon), n-1);
@@ -221,9 +221,9 @@ Reproduced from: [P.-Y. Lagrée's Sandbox](http://basilisk.fr/sandbox/M1EMN/Exem
     D2temp += sq((u.y[0,0] + u.y[0,-1])/(2*max(y, 1e-20))); // D22
 #endif
     D2temp += sq(0.5*( (u.x[1,0] - u.x[-1,0] + u.x[1,-1] - u.x[-1,-1])/(2.*Delta) )); // D33
-    D2temp += sq(0.5*( (u.x[0,0] - u.x[0,-1])/Delta + 0.5*( (u.y[1,0] - u.y[-1,0] + u.y[1,-1] - u.y[-1,-1])/(2.*Delta) ) )); // D13
+    D2temp += 2.0*sq(0.5*( (u.x[0,0] - u.x[0,-1])/Delta + 0.5*( (u.y[1,0] - u.y[-1,0] + u.y[1,-1] - u.y[-1,-1])/(2.*Delta) ) )); // D13
 
-    D2temp = sqrt(D2temp/2.);
+    D2temp = sqrt(D2temp/2.0);
 
     if (tauy > 0.){
       muTemp = tauy/(2.0*D2temp + epsilon) + mu1*pow((2.0*D2temp + epsilon), n-1);
