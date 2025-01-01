@@ -147,7 +147,7 @@ def process_timestep(ti, caseToProcess, folder, nGFS, GridsPerR, rmin, rmax, zmi
         origin='lower', 
         extent=extent_D2,
         vmin=-3e0,
-        vmax=3e0
+        vmax=2e0
     )
 
     # Equal aspect ensures squares in the new orientation
