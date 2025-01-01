@@ -1,8 +1,11 @@
 /**
  * Modification by Vatsal Sanjay 
- * Version 3.5, Dec 31, 2024
+ * Version 4.0, Jan 1, 2025
 
 # Changelog
+
+## Jan 1, 2025 (v4.0)
+- There was a bug in calculation of D2 which would trigger while using parallel computing only. This has been fixed.
 
 ## Dec 31, 2024 (v3.5)
 - Added the Herschel-Bulkley formulation. n = 1 recovers the Bingham formulation. n = 1, tau_y = 0 recovers the Newtonian formulation.
