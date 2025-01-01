@@ -1,8 +1,12 @@
 # Herschel-Bulkley Worthington Jets & Droplets Produced by Bursting Bubbles
 
-This repository contains the simulation code and analysis for studying the dynamics of Herschel-Bulkley Worthington jets and droplets produced by bursting bubbles. The code uses the Basilisk framework to simulate bubble cavity collapse in non-Newtonian media, examining how power-law index, yield stress, and viscosity affect jet and droplet formation.
+[![Documentation](https://img.shields.io/badge/Documentation-Obsidian-purple?style=flat&logo=obsidian)](https://publish.obsidian.md/comphy-lab/Herschel%E2%80%93Bulkley+formulation)
+[![Demo](https://img.shields.io/badge/Demo-YouTube-red?style=flat&logo=youtube)](https://youtu.be/NmvCVsiEZIA)
+[![License](https://img.shields.io/github/license/comphy-lab/BurstingBubble_Herschel-Bulkley?style=flat)](LICENSE)
+![GitHub repo size](https://img.shields.io/github/repo-size/comphy-lab/BurstingBubble_Herschel-Bulkley)
+![GitHub last commit](https://img.shields.io/github/last-commit/comphy-lab/BurstingBubble_Herschel-Bulkley)
 
-The article can be found at: 
+This repository contains the simulation code and analysis for studying the dynamics of Herschel-Bulkley Worthington jets and droplets produced by bursting bubbles. The code uses the Basilisk framework to simulate bubble cavity collapse in non-Newtonian media, examining how power-law index, yield stress, and viscosity affect jet and droplet formation.
 
 <!-- [![](https://img.shields.io/badge/arXiv-4b4b4b?style=flat&logo=arxiv&link=https://arxiv.org/pdf/22408.05089.pdf)](https://arxiv.org/pdf/2408.05089.pdf) -->
 <!-- [![](https://img.shields.io/badge/Journal%20of%20Fluid%20Mechanics-ADD-DOI-HERE-WHEN-PUBLISHED-blue)](https://doi.org/ADD-DOI-HERE-WHEN-PUBLISHED) -->
