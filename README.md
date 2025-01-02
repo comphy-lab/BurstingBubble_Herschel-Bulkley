@@ -5,6 +5,8 @@
 [![License](https://img.shields.io/github/license/comphy-lab/BurstingBubble_Herschel-Bulkley?style=flat)](LICENSE)
 ![GitHub repo size](https://img.shields.io/github/repo-size/comphy-lab/BurstingBubble_Herschel-Bulkley)
 ![GitHub last commit](https://img.shields.io/github/last-commit/comphy-lab/BurstingBubble_Herschel-Bulkley)
+[![GitHub issues](https://img.shields.io/github/issues/comphy-lab/BurstingBubble_Herschel-Bulkley)](https://github.com/comphy-lab/BurstingBubble_Herschel-Bulkley/issues)
+[![DOI](https://zenodo.org/badge/910477928.svg)](https://doi.org/10.5281/zenodo.14585953)
 
 This repository contains the simulation code and analysis for studying the dynamics of Herschel-Bulkley Worthington jets and droplets produced by bursting bubbles. The code uses the Basilisk framework to simulate bubble cavity collapse in non-Newtonian media, examining how power-law index, yield stress, and viscosity affect jet and droplet formation.
 
@@ -152,6 +154,16 @@ sbatch run_simulation.sh
 ### Additional Running Scripts
 
 The `z_extras/running` directory contains supplementary materials and post-processing tools used in the analysis. This includes C-based data extraction utilities, Python visualization scripts, and analysis notebooks. These tools were used to process simulation outputs and generate figures for the study. For detailed documentation of these tools, see the [README](z_extras/README.md) in the `z_extras` directory.
+
+## Contributing
+
+**Issues & Contributions**: Please file bug reports, feature requests, or pull requests on [GitHub](https://github.com/comphy-lab/BurstingBubble_Herschel-Bulkley/issues). When creating an issue, please:
+
+- For bug reports: Include the error message, OS version, and steps to reproduce the issue
+- For feature requests: Clearly describe the proposed feature and its use case
+- For questions: Check existing issues and documentation first
+
+We welcome contributions! Please feel free to submit a Pull Request.
 
 ## Reset Install Requirements Script
 
