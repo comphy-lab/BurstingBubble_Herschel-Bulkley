@@ -29,6 +29,7 @@
 **/pinchOff
 **/getview3D
 **/burstingBubbleHB
+**/Simulations-failing
 
 # never exclude these files
 !*.c

@@ -71,10 +71,10 @@ int  main(int argc, char const *argv[]) {
   Values taken from the terminal. Here we use some representative values. In production run, you can pass it from the command line.
   */
   MAXlevel = 10; 
-  n = 0.5; 
-  OhK = 0.01;
-  J = 5e-1; 
-  Bond = 1e-3;
+  n = 0.4; 
+  OhK = 0.001;
+  J = 2e-1; 
+  Bond = 1e-1;
   tmax = 2.5e0;
   epsilon = 1e-2;
 
