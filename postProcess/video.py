@@ -208,7 +208,7 @@ def main():
     num_processes = CPUStoUse
     
     rmin, rmax, zmin, zmax = [RMIN, RMAX, ZMIN, ZMAX]
-    GridsPerR = 256
+    GridsPerR = 128
 
     lw = 2
     folder = 'Video'

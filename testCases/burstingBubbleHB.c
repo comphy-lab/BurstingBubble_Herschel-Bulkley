@@ -74,7 +74,7 @@ int  main(int argc, char const *argv[]) {
   n = 0.4; 
   OhK = 0.001;
   J = 2e-1; 
-  Bond = 1e-1;
+  Bond = 1e0;
   tmax = 2.5e0;
   epsilon = 1e-2;
 
