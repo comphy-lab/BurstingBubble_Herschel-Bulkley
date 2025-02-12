@@ -94,6 +94,7 @@ int  main(int argc, char const *argv[]) {
   J = atof(argv[4]);
   Bond = atof(argv[5]);
   tmax = atof(argv[6]);
+  epsilon = 1e-2;
 
   */
 
