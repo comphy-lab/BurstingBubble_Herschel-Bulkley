@@ -142,7 +142,7 @@ event init (t = 0) {
 #else
   if (!restore (file = dumpFile)){
       char filename[60];
-      sprintf(filename,"Bo%5.4f.dat",Bond);
+      sprintf(filename,"Bo%5.4f-buggy.dat",Bond);
       FILE * fp = fopen(filename,"rb");
         if (fp == NULL){
           fprintf(ferr, "There is no file named %s\n", filename);
