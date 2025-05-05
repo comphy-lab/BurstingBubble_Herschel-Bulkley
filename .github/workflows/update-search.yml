@@ -30,7 +30,7 @@ jobs:
       run: |
         cp comphy-search/search_db.json docs/assets/js/search_db.json
     
-    - name: Commit and push changes directly (bypassing branch protection)
+    - name: Commit and push changes directly
       run: |
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
@@ -39,6 +39,5 @@ jobs:
           echo "No changes to commit"
         else
           git commit -m "Update search database from comphy-search repository [skip-deploy]"
-          # Use PAT to bypass branch protection
-          git push "https://${{ secrets.BYPASS_TOKEN }}@github.com/${GITHUB_REPOSITORY}.git" HEAD:main
+          git push
         fi
