@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="base-url" content="..">
+    <title>src-local/two-phaseVP-HB.h | Herschel-Bulkley Worthington Jets & Droplets Produced by Bursting Bubbles</title>
+<a id="" href="#"></a>
+    <!-- Critical CSS for fastest paint -->
+    <style>
+        .s-intro__title {
+            visibility: visible;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        }
+        .s-header {
+            visibility: visible;
+        }
+    </style>
+<a id="" href="#"></a>
+    <!-- Preload critical resources -->
+    <link rel="preload" href="../assets/js/main.js" as="script">
+    <link rel="preload" href="../assets/css/fontello/css/fontello.css" as="style">
+    <link rel="preload" href="../assets/css/academicons-1.7.0/css/academicons.min.css" as="style">
+<a id="" href="#"></a>
+    <!-- Base stylesheet with proper path resolution for local deployment -->
+    <link rel="stylesheet" href="../assets/css/styles.css">
+    <link rel="stylesheet" href="../assets/css/custom_styles.css">
+    <link rel="stylesheet" href="../assets/css/fontello/css/fontello.css">
+    <link rel="stylesheet" href="../assets/css/academicons-1.7.0/css/academicons.min.css">
+    <link rel="stylesheet" href="../assets/css/command-palette.css">
+    <!-- Font Awesome for icons on all documentation pages -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<a id="" href="#"></a>
+    <!-- Favicon -->
+    <link rel="apple-touch-icon" sizes="180x180" href="../assets/favicon/apple-touch-icon.png">
+    <link rel="apple-touch-icon-precomposed" sizes="180x180" href="../assets/favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="../assets/favicon/favicon-96x96.png">
+    <link rel="icon" type="image/svg+xml" href="../assets/favicon/favicon.svg">
+    <link rel="manifest" href="../assets/favicon/site.webmanifest">
+    <link rel="shortcut icon" href="../assets/favicon/favicon.ico">
+    <link rel="icon" href="../assets/favicon/favicon.ico">
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="theme-color" content="#ffffff">
+    <meta name="apple-mobile-web-app-title" content="CoMPhy Lab">
+<a id="" href="#"></a>
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="Computational fluid dynamics simulations using Basilisk C framework.">
+    <meta name="author" content="CoMPhy Lab">
+    <meta name="robots" content="index, follow">
+    <meta name="keywords" content="fluid dynamics, CFD, Basilisk, multiphase flow, computational physics">
+<a id="" href="#"></a>
+    <!-- Font dependencies with font-display: swap -->
+    <style>
+        @font-face {
+            font-display: swap;
+            font-family: 'System Font';
+            src: local('system-ui');
+        }
+    </style>
+    <link rel="stylesheet" href="../assets/css/fontello/css/fontello.css" media="print" onload="this.media='all'">
+    <link rel="stylesheet" href="../assets/css/academicons-1.7.0/css/academicons.min.css" media="print" onload="this.media='all'">
+    <noscript>
+        <link rel="stylesheet" href="../assets/css/fontello/css/fontello.css">
+        <link rel="stylesheet" href="../assets/css/academicons-1.7.0/css/academicons.min.css">
+    </noscript>
+<a id="" href="#"></a>
+    <!-- Site styles -->
+    <link rel="stylesheet" href="../assets/css/vendor.css">
+    <link rel="stylesheet" href="../assets/css/styles.css">
+    <link rel="stylesheet" href="../assets/css/custom_styles.css">
+    <link rel="stylesheet" href="../assets/css/command-palette.css" media="print" onload="this.media='all'">
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" id="MathJax-script"></script>   
+    <!-- Fuse.js for search functionality -->
+    <script defer src="https://cdn.jsdelivr.net/npm/fuse.js@6.6.2/dist/fuse.min.js"></script>
+<a id="" href="#"></a>
+    <!-- jQuery and UI -->
+    <script src="../assets/js/jquery.min.js"></script>
+    <script src="../assets/js/jquery-ui.packed.js"></script>
+    <script src="../assets/js/plots.js"></script>
+<a id="" href="#"></a>
+    <!-- Command palette -->
+    <script defer src="../assets/js/command-palette.js"></script>
+    <script defer src="../assets/js/command-data.js"></script>
+    <script defer src="../assets/js/main.js"></script>
+    <script defer src="../assets/js/theme-toggle.js"></script>
+<a id="" href="#"></a>
+    <script>
+        // Load Font Awesome with proper environment detection and fallbacks
+        function loadStylesheet(href) {
+          const link = document.createElement('link');
+          link.rel = 'stylesheet';
+          link.href = href;
+          link.crossOrigin = 'anonymous';
+          link.onerror = (e) => {
+            console.error(`Failed to load stylesheet: `);
+            console.log('Trying alternative Font Awesome source...');
+          };
+          document.head.appendChild(link);
+          return link;
+        }
+<a id="" href="#"></a>
+        // Check if we're on localhost
+        if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+          // Use hardcoded version numbers for reliable loading
+<a id="" href="#"></a>
+          // Load Font Awesome using multiple CDNs to maximize reliability for local development
+          loadStylesheet('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css');
+          // Backup CDN if the first one fails
+          loadStylesheet('https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.7.2/css/all.min.css');
+          // Final local fallback - ensures it will work on any localhost environment
+          loadStylesheet('https://use.fontawesome.com/releases/v6.7.2/css/all.css');
+        } else {
+          // Use Kit for production with defer
+          var script = document.createElement('script');
+          script.src = 'https://kit.fontawesome.com/b1cfd9ca75.js';
+          script.crossOrigin = 'anonymous';
+          script.defer = true;
+          document.head.appendChild(script);
+        }
+      </script>
+<a id="" href="#"></a>
+    <script>
+        document.documentElement.classList.remove('no-js');
+        document.documentElement.classList.add('js');
+    </script>
+<a id="" href="#"></a>
+        true
+    </head>
+<body id="top">
+<script>window.repoName = "BurstingBubble_Herschel-Bulkley";</script>
+
+<a id="" href="#"></a>
+    <div id="preloader">
+        <div id="loader"></div>
+    </div>
+<a id="" href="#"></a>
+    <div id="page" class="s-pagewrap">
+        <header class="s-header">
+            <div class="s-header__logo">
+                <a class="logo" href="/">
+                    <img src="../assets/logos/CoMPhy-Lab-no-name.png" alt="CoMPhy Lab">
+                </a>
+                <a class="documentation-button" href="/BurstingBubble_Herschel-Bulkley">
+                    <i class="fa-solid fa-book-open"></i>
+                    <span>BurstingBubble_Herschel-Bulkley</span>
+                </a>
+            </div>
+            <a class="s-header__menu-toggle" href="#0">
+                <span class="s-header__menu-text">Menu</span>
+                <span class="s-header__menu-icon"></span>
+            </a>
+            <nav class="s-header__nav">
+                <a href="#0" class="s-header__nav-close-btn"><span>Close</span></a>
+                <ul class="s-header__nav-list">
+                    <li style="background: none;">
+                        <div class="theme-toggle" id="theme-toggle" aria-label="Toggle dark/light theme">
+                            <svg class="theme-toggle-icon moon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                            </svg>
+                            <svg class="theme-toggle-icon sun" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="5"></circle>
+                                <line x1="12" y1="1" x2="12" y2="3"></line>
+                                <line x1="12" y1="21" x2="12" y2="23"></line>
+                                <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                                <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                                <line x1="1" y1="12" x2="3" y2="12"></line>
+                                <line x1="21" y1="12" x2="23" y2="12"></line>
+                                <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                                <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                            </svg>
+                        </div>
+                    </li>
+                    <li style="background: none;"><a href="https://scholar.google.com/citations?user=tHb_qZoAAAAJ&hl=en" style="background: none; padding: 0;" aria-label="Google Scholar Profile"><i class="ai ai-google-scholar" style="font-size: 1.75em;"></i></a></li>
+                    <li style="background: none;"><a href="https://github.com/comphy-lab" style="background: none; padding: 0;" aria-label="GitHub Organization"><i class="fa-brands fa-github" style="font-size: 1.75em"></i></a></li>
+                    <li><a href="https://comphy-lab.org/#about" class="smoothscroll">About</a></li>
+                    <li><a href="https://comphy-lab.org/team/">Team</a></li>
+                    <li><a href="https://comphy-lab.org/research">Research</a></li>
+                    <li><a href="https://comphy-lab.org/teaching">Teaching</a></li>
+                    <li><a href="https://comphy-lab.org/join">Join Us</a></li>
+                    <li><a href="https://blogs.comphy-lab.org/">Blog</a></li>
+                    <li style="background: none;"><a href="https://bsky.app/profile/comphy-lab.org" style="background: none; padding: 0;" aria-label="Bluesky Profile"><i class="fa-brands fa-bluesky" style="font-size: 1.75em; color: #0085ff;"></i></a></li>
+                    <!-- Command Palette Button (Styled like search) -->
+                    <li class="command-palette-button">
+                        <div class="command-wrapper">
+                            <button class="command-k-style-btn" id="command-palette-btn" aria-label="Open command palette">
+                                <span class="default-theme-text">ctrl K</span>
+                                <span class="mac-theme-text">⌘ K</span>
+                                <i class="fa-solid fa-magnifying-glass search-icon"></i>
+                            </button>
+                        </div>
+                    </li>
+                </ul>
+            </nav>
+        </header>
+<a id="" href="#"></a>
+        <!-- Main content -->
+        <main class="content">
+<a id="" href="#"></a>
+            <div class="page-content">
+<a id="" href="#"></a>
+                                <h1 class="page-title">src-local/two-phaseVP-HB.h</h1>
+<a id="" href="#"></a>
+<a id="" href="#"></a>
+                <ul>
+                <li>Modification by Vatsal Sanjay</li>
+                <li>Version 4.0, Jan 1, 2025</li>
+                </ul>
+                <h1 id="changelog">Changelog</h1>
+                <h2 id="jan-1-2025-v4.0">Jan 1, 2025 (v4.0)</h2>
+                <ul>
+                <li>There was a bug in calculation of D2 which would
+                trigger while using parallel computing only. This has
+                been fixed.</li>
+                </ul>
+                <h2 id="dec-31-2024-v3.5">Dec 31, 2024 (v3.5)</h2>
+                <ul>
+                <li>Added the Herschel-Bulkley formulation. n = 1
+                recovers the Bingham formulation. n = 1, tau_y = 0
+                recovers the Newtonian formulation.</li>
+                </ul>
+                <h2 id="oct-11-2024-v2.0">Oct 11, 2024 (v2.0)</h2>
+                <ul>
+                <li>Using the epsilon formulation for the viscoplastic
+                fluid.</li>
+                <li>Unified the code to handle both planar and
+                axi-symmetric cases seamlessly. This eliminates the need
+                for a separate codebase when switching to axi-symmetric
+                formulations.</li>
+                <li>Only fluid 1 can be viscoplastic, fluid 2 is always
+                Newtonian.</li>
+                </ul>
+                <h2 id="brief-history">Brief history:</h2>
+                <ul>
+                <li>v0.0 is of course the original code on
+                http://basilisk.fr/src/two-phase.h valid for Newtonian
+                fluids.</li>
+                <li>v1.0 is the modification for viscoplastic fluids
+                using the min(temp, mumax) formulation where one needed
+                to use a separate codebase for axi-symmetric cases (see:
+                git@github.com:VatsalSy/Bursting-Bubble-In-a-Viscoplastic-Medium.git).</li>
+                <li>v2.0 is the modification for viscoplastic fluids
+                using the epsilon formulation (this code) where I also
+                unified the code to handle both planar and axi-symmetric
+                cases seamlessly.</li>
+                </ul>
+                <h1 id="two-phase-interfacial-flows">Two-phase
+                interfacial flows</h1>
+                <p>This is a modified version of <a
+                href="http://basilisk.fr/src/two-phase.h">two-phase.h</a>.
+                It contains the implementation of Viscoplastic Fluid
+                (Bingham Fluid).<br/> This file helps setup simulations
+                for flows of two fluids separated by an interface
+                (i.e. immiscible fluids). It is typically used in
+                combination with a <a
+                href="navier-stokes/centered.h">Navier–Stokes
+                solver</a>.</p>
+                <p>The interface between the fluids is tracked with a
+                Volume-Of-Fluid method. The volume fraction in fluid 1
+                is <span class="math inline">\(f=1\)</span> and <span
+                class="math inline">\(f=0\)</span> in fluid 2. The
+                densities and dynamic viscosities for fluid 1 and 2 are
+                <em>rho1</em>, <em>mu1</em>, <em>rho2</em>,
+                <em>mu2</em>, respectively.</p>
+                <div class="code-block-container"><div class="code-block-container"><pre
+                class="sourceCode c"><code class="sourceCode c"><span id="cb1-1"><span class="pp">#include </span><a href="http://basilisk.fr/src/vof.h" title="Link to Basilisk source for vof.h"><span class="im">"vof.h"</span></a></span>
+<span id="cb1-2"></span>
+<span id="cb1-3">scalar f<span class="op">[],</span> <span class="op">*</span> interfaces <span class="op">=</span> <span class="op">{</span>f<span class="op">};</span></span>
+<span id="cb1-4">scalar D2<span class="op">[];</span></span>
+<span id="cb1-5">face vector D2f<span class="op">[];</span></span>
+<span id="cb1-6"><span class="dt">double</span> rho1 <span class="op">=</span> <span class="fl">1.</span><span class="op">,</span> mu1 <span class="op">=</span> <span class="fl">0.</span><span class="op">,</span> rho2 <span class="op">=</span> <span class="fl">1.</span><span class="op">,</span> mu2 <span class="op">=</span> <span class="fl">0.</span><span class="op">;</span></span>
+<span id="cb1-7"><span class="dt">double</span> epsilon <span class="op">=</span> <span class="fl">1e-6</span><span class="op">,</span> tauy <span class="op">=</span> <span class="fl">0.</span><span class="op">,</span> n <span class="op">=</span> <span class="fl">1.</span><span class="op">;</span></span></code></pre></div></div>
+                <p>Auxilliary fields are necessary to define the
+                (variable) specific volume <span
+                class="math inline">\(\alpha=1/\rho\)</span> as well as
+                the cell-centered density.</p>
+                <div class="code-block-container"><div class="code-block-container"><pre
+                class="sourceCode c"><code class="sourceCode c"><span id="cb2-1">face vector alphav<span class="op">[];</span></span>
+<span id="cb2-2">scalar rhov<span class="op">[];</span></span>
+<span id="cb2-3"></span>
+<span id="cb2-4">event defaults <span class="op">(</span>i <span class="op">=</span> <span class="dv">0</span><span class="op">)</span> <span class="op">{</span></span>
+<span id="cb2-5">  alpha <span class="op">=</span> alphav<span class="op">;</span></span>
+<span id="cb2-6">  rho <span class="op">=</span> rhov<span class="op">;</span></span></code></pre></div></div>
+                <p>If the viscosity is non-zero, we need to allocate the
+                face-centered viscosity field.</p>
+                <div class="code-block-container"><div class="code-block-container"><pre
+                class="sourceCode c"><code class="sourceCode c"><span id="cb3-1">  mu <span class="op">=</span> new face vector<span class="op">;</span></span>
+<span id="cb3-2"><span class="op">}</span></span></code></pre></div></div>
+                <p>The density and viscosity are defined using
+                arithmetic averages by default. The user can overload
+                these definitions to use other types of averages
+                (i.e. harmonic).</p>
+                <div class="code-block-container"><div class="code-block-container"><pre
+                class="sourceCode c"><code class="sourceCode c"><span id="cb4-1"><span class="pp">#ifndef rho</span></span>
+<span id="cb4-2"><span class="pp"># define rho</span><span class="op">(</span><span class="pp">f</span><span class="op">)</span><span class="pp"> </span><span class="op">(</span><span class="pp">clamp</span><span class="op">(</span><span class="pp">f</span><span class="op">,</span><span class="fl">0.</span><span class="op">,</span><span class="fl">1.</span><span class="op">)*(</span><span class="pp">rho1 </span><span class="op">-</span><span class="pp"> rho2</span><span class="op">)</span><span class="pp"> </span><span class="op">+</span><span class="pp"> rho2</span><span class="op">)</span><span class="pp"></span><span class="dv">66</span><span class="pp"></span></span>
+<span id="cb4-3"><span class="pp">#endif</span></span>
+<span id="cb4-4"><span class="pp">#ifndef mu</span></span>
+<span id="cb4-5"><span class="co">// for Arithmetic mean, use this</span></span>
+<span id="cb4-6"><span class="co">// # define mu(muTemp, mu2, f)  (clamp(f,0.,1.)*(muTemp - mu2) + mu2)</span></span>
+<span id="cb4-7"><span class="co">// for Harmonic mean, use this</span></span>
+<span id="cb4-8"><span class="pp"># define mu</span><span class="op">(</span><span class="pp">muTemp</span><span class="op">,</span><span class="pp"> mu2</span><span class="op">,</span><span class="pp"> f</span><span class="op">)</span><span class="pp"> </span><span class="op">(</span><span class="fl">1.0</span><span class="pp"> </span><span class="op">/</span><span class="pp"> </span><span class="op">((</span><span class="pp">clamp</span><span class="op">(</span><span class="pp">f</span><span class="op">,</span><span class="fl">0.</span><span class="op">,</span><span class="fl">1.</span><span class="op">)</span><span class="pp"> </span><span class="op">/</span><span class="pp"> muTemp</span><span class="op">)</span><span class="pp"> </span><span class="op">+</span><span class="pp"> </span><span class="op">((</span><span class="fl">1.0</span><span class="pp"> </span><span class="op">-</span><span class="pp"> clamp</span><span class="op">(</span><span class="pp">f</span><span class="op">,</span><span class="fl">0.</span><span class="op">,</span><span class="fl">1.</span><span class="op">))</span><span class="pp"> </span><span class="op">/</span><span class="pp"> mu2</span><span class="op">)))</span><span class="pp"></span><span class="dv">72</span><span class="pp"></span></span>
+<span id="cb4-9"><span class="pp">#endif</span></span></code></pre></div></div>
+                <p>We have the option of using some “smearing” of the
+                density/viscosity jump.</p>
+                <div class="code-block-container"><div class="code-block-container"><pre
+                class="sourceCode c"><code class="sourceCode c"><span id="cb5-1"><span class="pp">#ifdef FILTERED</span></span>
+<span id="cb5-2">scalar sf<span class="op">[];</span></span>
+<span id="cb5-3"><span class="pp">#else</span></span>
+<span id="cb5-4"><span class="pp"># define sf f</span><span class="dv">82</span><span class="pp"></span></span>
+<span id="cb5-5"><span class="pp">#endif</span></span>
+<span id="cb5-6"></span>
+<span id="cb5-7">event tracer_advection <span class="op">(</span>i<span class="op">++)</span> <span class="op">{</span></span></code></pre></div></div>
+                <p>When using smearing of the density jump, we
+                initialise <em>sf</em> with the vertex-average of
+                <em>f</em>.</p>
+                <div class="code-block-container"><div class="code-block-container"><pre
+                class="sourceCode c"><code class="sourceCode c"><span id="cb6-1"><span class="pp">#ifndef sf</span></span>
+<span id="cb6-2"><span class="pp">#if dimension &lt;=</span></span>
+<span id="cb6-3">  foreach<span class="op">()</span></span>
+<span id="cb6-4">    sf<span class="op">[]</span> <span class="op">=</span> <span class="op">(</span><span class="fl">4.</span><span class="op">*</span>f<span class="op">[]</span> <span class="op">+</span></span>
+<span id="cb6-5">        <span class="fl">2.</span><span class="op">*(</span>f<span class="op">[</span><span class="dv">0</span><span class="op">,</span><span class="dv">1</span><span class="op">]</span> <span class="op">+</span> f<span class="op">[</span><span class="dv">0</span><span class="op">,-</span><span class="dv">1</span><span class="op">]</span> <span class="op">+</span> f<span class="op">[</span><span class="dv">1</span><span class="op">,</span><span class="dv">0</span><span class="op">]</span> <span class="op">+</span> f<span class="op">[-</span><span class="dv">1</span><span class="op">,</span><span class="dv">0</span><span class="op">])</span> <span class="op">+</span></span>
+<span id="cb6-6">        f<span class="op">[-</span><span class="dv">1</span><span class="op">,-</span><span class="dv">1</span><span class="op">]</span> <span class="op">+</span> f<span class="op">[</span><span class="dv">1</span><span class="op">,-</span><span class="dv">1</span><span class="op">]</span> <span class="op">+</span> f<span class="op">[</span><span class="dv">1</span><span class="op">,</span><span class="dv">1</span><span class="op">]</span> <span class="op">+</span> f<span class="op">[-</span><span class="dv">1</span><span class="op">,</span><span class="dv">1</span><span class="op">])/</span><span class="fl">16.</span><span class="op">;</span></span>
+<span id="cb6-7"><span class="pp">#else </span><span class="co">// dimension ==</span></span>
+<span id="cb6-8">  foreach<span class="op">()</span></span>
+<span id="cb6-9">    sf<span class="op">[]</span> <span class="op">=</span> <span class="op">(</span><span class="fl">8.</span><span class="op">*</span>f<span class="op">[]</span> <span class="op">+</span></span>
+<span id="cb6-10">        <span class="fl">4.</span><span class="op">*(</span>f<span class="op">[-</span><span class="dv">1</span><span class="op">]</span> <span class="op">+</span> f<span class="op">[</span><span class="dv">1</span><span class="op">]</span> <span class="op">+</span> f<span class="op">[</span><span class="dv">0</span><span class="op">,</span><span class="dv">1</span><span class="op">]</span> <span class="op">+</span> f<span class="op">[</span><span class="dv">0</span><span class="op">,-</span><span class="dv">1</span><span class="op">]</span> <span class="op">+</span> f<span class="op">[</span><span class="dv">0</span><span class="op">,</span><span class="dv">0</span><span class="op">,</span><span class="dv">1</span><span class="op">]</span> <span class="op">+</span> f<span class="op">[</span><span class="dv">0</span><span class="op">,</span><span class="dv">0</span><span class="op">,-</span><span class="dv">1</span><span class="op">])</span> <span class="op">+</span></span>
+<span id="cb6-11">        <span class="fl">2.</span><span class="op">*(</span>f<span class="op">[-</span><span class="dv">1</span><span class="op">,</span><span class="dv">1</span><span class="op">]</span> <span class="op">+</span> f<span class="op">[-</span><span class="dv">1</span><span class="op">,</span><span class="dv">0</span><span class="op">,</span><span class="dv">1</span><span class="op">]</span> <span class="op">+</span> f<span class="op">[-</span><span class="dv">1</span><span class="op">,</span><span class="dv">0</span><span class="op">,-</span><span class="dv">1</span><span class="op">]</span> <span class="op">+</span> f<span class="op">[-</span><span class="dv">1</span><span class="op">,-</span><span class="dv">1</span><span class="op">]</span> <span class="op">+</span></span>
+<span id="cb6-12">        f<span class="op">[</span><span class="dv">0</span><span class="op">,</span><span class="dv">1</span><span class="op">,</span><span class="dv">1</span><span class="op">]</span> <span class="op">+</span> f<span class="op">[</span><span class="dv">0</span><span class="op">,</span><span class="dv">1</span><span class="op">,-</span><span class="dv">1</span><span class="op">]</span> <span class="op">+</span> f<span class="op">[</span><span class="dv">0</span><span class="op">,-</span><span class="dv">1</span><span class="op">,</span><span class="dv">1</span><span class="op">]</span> <span class="op">+</span> f<span class="op">[</span><span class="dv">0</span><span class="op">,-</span><span class="dv">1</span><span class="op">,-</span><span class="dv">1</span><span class="op">]</span> <span class="op">+</span></span>
+<span id="cb6-13">        f<span class="op">[</span><span class="dv">1</span><span class="op">,</span><span class="dv">1</span><span class="op">]</span> <span class="op">+</span> f<span class="op">[</span><span class="dv">1</span><span class="op">,</span><span class="dv">0</span><span class="op">,</span><span class="dv">1</span><span class="op">]</span> <span class="op">+</span> f<span class="op">[</span><span class="dv">1</span><span class="op">,-</span><span class="dv">1</span><span class="op">]</span> <span class="op">+</span> f<span class="op">[</span><span class="dv">1</span><span class="op">,</span><span class="dv">0</span><span class="op">,-</span><span class="dv">1</span><span class="op">])</span> <span class="op">+</span></span>
+<span id="cb6-14">        f<span class="op">[</span><span class="dv">1</span><span class="op">,-</span><span class="dv">1</span><span class="op">,</span><span class="dv">1</span><span class="op">]</span> <span class="op">+</span> f<span class="op">[-</span><span class="dv">1</span><span class="op">,</span><span class="dv">1</span><span class="op">,</span><span class="dv">1</span><span class="op">]</span> <span class="op">+</span> f<span class="op">[-</span><span class="dv">1</span><span class="op">,</span><span class="dv">1</span><span class="op">,-</span><span class="dv">1</span><span class="op">]</span> <span class="op">+</span> f<span class="op">[</span><span class="dv">1</span><span class="op">,</span><span class="dv">1</span><span class="op">,</span><span class="dv">1</span><span class="op">]</span> <span class="op">+</span></span>
+<span id="cb6-15">        f<span class="op">[</span><span class="dv">1</span><span class="op">,</span><span class="dv">1</span><span class="op">,-</span><span class="dv">1</span><span class="op">]</span> <span class="op">+</span> f<span class="op">[-</span><span class="dv">1</span><span class="op">,-</span><span class="dv">1</span><span class="op">,-</span><span class="dv">1</span><span class="op">]</span> <span class="op">+</span> f<span class="op">[</span><span class="dv">1</span><span class="op">,-</span><span class="dv">1</span><span class="op">,-</span><span class="dv">1</span><span class="op">]</span> <span class="op">+</span> f<span class="op">[-</span><span class="dv">1</span><span class="op">,-</span><span class="dv">1</span><span class="op">,</span><span class="dv">1</span><span class="op">])/</span><span class="fl">64.</span><span class="op">;</span></span>
+<span id="cb6-16"><span class="pp">#endif</span></span>
+<span id="cb6-17"><span class="pp">#endif</span></span>
+<span id="cb6-18"></span>
+<span id="cb6-19"><span class="pp">#if TREE</span></span>
+<span id="cb6-20">  sf<span class="op">.</span>prolongation <span class="op">=</span> refine_bilinear<span class="op">;</span></span>
+<span id="cb6-21">  sf<span class="op">.</span>dirty <span class="op">=</span> <span class="kw">true</span><span class="op">;</span> <span class="co">// boundary conditions need to be updated</span></span>
+<span id="cb6-22"><span class="pp">#endif</span></span>
+<span id="cb6-23"><span class="op">}</span></span>
+<span id="cb6-24"></span>
+<span id="cb6-25">event properties <span class="op">(</span>i<span class="op">++)</span> <span class="op">{</span></span></code></pre></div></div>
+                <p>This is the part where we have made changes. #
+                Herschel–Bulkley formulation for non-Newtonian flows ##
+                Features: * Yield stress <span
+                class="math inline">\(\tau_y\)</span> * Power law
+                dependance on the strain rate * Shear thinning for <span
+                class="math inline">\(n &lt; 1\)</span>. * Shear
+                thickening for <span class="math inline">\(n &gt;
+                1\)</span>. * Bingham model for <span
+                class="math inline">\(n = 1\)</span>. * Newtonian fluid
+                for <span class="math inline">\(n = 1\)</span> and <span
+                class="math inline">\(\tau_y = 0\)</span>.</p>
+                <h2 id="varepsilon-formulation"><span
+                class="math inline">\(\varepsilon\)</span>-formulation</h2>
+                <p><span class="math display">\[
+                \boldsymbol{\tau} =
+                \tau_{y}\,\boldsymbol{\mathcal{I}} \;+\;
+                K\left(2\boldsymbol{\mathcal{D}}\right)^{n}
+                =
+                2\biggl[\frac{\tau_{y}}{2\|\boldsymbol{\mathcal{D}}\|+\varepsilon}\,\boldsymbol{\mathcal{I}}
+                +
+                K\,\bigl(2\|\boldsymbol{\mathcal{D}}\|+\epsilon\bigr)^{n-1}
+                \biggr]\boldsymbol{\mathcal{D}}.
+                \]</span> Normalizing stresses with <span
+                class="math inline">\(\gamma/R_0\)</span>, length with
+                <span class="math inline">\(R_0\)</span>, and velocity
+                with <span
+                class="math inline">\(\sqrt{\gamma/\rho_lR_0}\)</span>…</p>
+                <p><span class="math display">\[
+                \boldsymbol{\tilde{\tau}} =
+                2\biggl[\frac{\mathcal{J}}{2\|\boldsymbol{\tilde{\mathcal{D}}}\|+\varepsilon}\,\boldsymbol{\mathcal{I}}
+                +
+                Oh_K\,\bigl(2\|\boldsymbol{\tilde{\mathcal{D}}}\|+\epsilon\bigr)^{n-1}
+                \biggr]\boldsymbol{\tilde{\mathcal{D}}}.
+                \]</span></p>
+                <p>Here, the effective Ohnesorge is</p>
+                <p><span class="math display">\[
+                Oh_K = \frac{K}{\sqrt{\rho_l^n\gamma^{2-n}R_0^{3n-2}}}
+                \]</span> One can easily see that putting <span
+                class="math inline">\(n = 1\)</span> recovers the
+                Bingham model with <span class="math inline">\(Oh =
+                \eta_l/\sqrt{\rho_l\gamma R_0}\)</span>. Additionally,
+                with <span class="math inline">\(n = 1\)</span> &amp;
+                <span class="math inline">\(\mathcal{J}\)</span> = 0,
+                the model will give a <code>Newtonian</code>
+                response.</p>
+                <h2 id="more-details-on-the-implementation">More details
+                on the implementation</h2>
+                <h3
+                id="calculate-the-norm-of-the-deformation-tensor-boldsymbolmathcald">Calculate
+                the norm of the deformation tensor <span
+                class="math inline">\(\boldsymbol{\mathcal{D}}\)</span>:</h3>
+                <p><span class="math display">\[\mathcal{D}_{11} =
+                \frac{\partial u_r}{\partial r}\]</span> <span
+                class="math display">\[\mathcal{D}_{22} =
+                \frac{u_r}{r}\]</span> <span
+                class="math display">\[\mathcal{D}_{13} =
+                \frac{1}{2}\left( \frac{\partial u_r}{\partial z}+
+                \frac{\partial u_z}{\partial r}\right)\]</span><span
+                class="math display">\[\mathcal{D}_{31} =
+                \frac{1}{2}\left( \frac{\partial u_z}{\partial r}+
+                \frac{\partial u_r}{\partial z}\right)\]</span> <span
+                class="math display">\[\mathcal{D}_{33} = \frac{\partial
+                u_z}{\partial z}\]</span> <span
+                class="math display">\[\mathcal{D}_{12} =
+                \mathcal{D}_{23} = 0.\]</span> The second invariant is
+                <span
+                class="math inline">\(\mathcal{D}_2=\sqrt{\mathcal{D}_{ij}\mathcal{D}_{ij}}\)</span>
+                (this is the Frobenius norm)</p>
+                <p><span class="math display">\[\mathcal{D}_2^2=
+                \mathcal{D}_{ij}\mathcal{D}_{ij}=
+                \mathcal{D}_{11}\mathcal{D}_{11} +
+                \mathcal{D}_{22}\mathcal{D}_{22} +
+                \mathcal{D}_{13}\mathcal{D}_{31} +
+                \mathcal{D}_{31}\mathcal{D}_{13} +
+                \mathcal{D}_{33}\mathcal{D}_{33}\]</span></p>
+                <p><strong>Note:</strong> <span
+                class="math inline">\(\|\mathcal{D}\| =
+                D_2/\sqrt{2}\)</span>.<br/></p>
+                <p>We use the formulation as given in <a
+                href="https://www.annualreviews.org/doi/pdf/10.1146/annurev-fluid-010313-141424">Balmforth
+                et al. (2013)</a> <span class="citation"
+                data-cites="balmforthYieldingStressRecent2014">[@balmforthYieldingStressRecent2014]</span>,
+                who use the strain rate tensor <span
+                class="math inline">\(\boldsymbol{\dot{\mathcal{S}}}\)</span>
+                which and its norm <span
+                class="math inline">\(\sqrt{\frac{1}{2}\dot{\mathcal{S}_{ij}}\dot{\mathcal{S}_{ij}}}\)</span>.
+                Of course, given <span
+                class="math inline">\(\dot{\mathcal{S}}_{ij}=2
+                D_{ij}\)</span>.</p>
+                <h3 id="calculate-the-equivalent-viscosity">Calculate
+                the equivalent viscosity</h3>
+                <p>Factorizing with <span class="math inline">\(2
+                \mathcal{D}_{ij}\)</span> to obtain an equivalent
+                viscosity <span class="math display">\[\eta_{\text{eff}}
+                =
+                \frac{\mathcal{J}}{2\|\boldsymbol{\tilde{\mathcal{D}}}\|+\varepsilon}\,\boldsymbol{\mathcal{I}}
+                +
+                Oh_K\,\bigl(2\|\boldsymbol{\tilde{\mathcal{D}}}\|+\epsilon\bigr)^{n-1}
+                \]</span></p>
+                <p>In this formulation, <span
+                class="math inline">\(\varepsilon\)</span> is a small
+                number to ensure numerical stability. The term <span
+                class="math display">\[\frac{\tau_y}{\varepsilon} +
+                ...\]</span>is equivalent to the <span
+                class="math inline">\(\mu_{max}\)</span> of the previous
+                (v1.0, see: <a
+                href="git@github.com:VatsalSy/Bursting-Bubble-In-a-Viscoplastic-Medium.git">GitHub</a>)
+                formulation <span class="citation"
+                data-cites="sanjayBurstingBubbleViscoplastic2021">[@sanjayBurstingBubbleViscoplastic2021]</span>.</p>
+                <p><strong>Note:</strong> The fluid flows always, it is
+                not a solid, but a very viscous fluid.</p>
+                <p>Reproduced from: <a
+                href="http://basilisk.fr/sandbox/M1EMN/Exemples/bingham_simple.c">P.-Y.
+                Lagrée’s Sandbox</a>. Here, we use a face implementation
+                of the regularisation method, described <a
+                href="http://basilisk.fr/sandbox/vatsal/GenaralizedNewtonian/Couette_NonNewtonian.c">here</a>.</p>
+                <div class="code-block-container"><div class="code-block-container"><pre
+                class="sourceCode c"><code class="sourceCode c"><span id="cb7-1">  foreach_face<span class="op">(</span>x<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb7-2">    <span class="dt">double</span> ff <span class="op">=</span> <span class="op">(</span>sf<span class="op">[]</span> <span class="op">+</span> sf<span class="op">[-</span><span class="dv">1</span><span class="op">])/</span><span class="fl">2.</span><span class="op">;</span></span>
+<span id="cb7-3">    alphav<span class="op">.</span>x<span class="op">[]</span> <span class="op">=</span> fm<span class="op">.</span>x<span class="op">[]/</span>rho<span class="op">(</span>ff<span class="op">);</span></span>
+<span id="cb7-4">    <span class="dt">double</span> muTemp <span class="op">=</span> mu1<span class="op">;</span></span>
+<span id="cb7-5"></span>
+<span id="cb7-6">    face vector muv <span class="op">=</span> mu<span class="op">;</span></span>
+<span id="cb7-7"></span>
+<span id="cb7-8">    <span class="dt">double</span> D2temp <span class="op">=</span> <span class="fl">0.</span><span class="op">;</span></span>
+<span id="cb7-9"></span>
+<span id="cb7-10">    D2temp <span class="op">+=</span> sq<span class="op">(</span><span class="fl">0.5</span><span class="op">*(</span> <span class="op">(</span>u<span class="op">.</span>y<span class="op">[</span><span class="dv">0</span><span class="op">,</span><span class="dv">1</span><span class="op">]</span> <span class="op">-</span> u<span class="op">.</span>y<span class="op">[</span><span class="dv">0</span><span class="op">,-</span><span class="dv">1</span><span class="op">]</span> <span class="op">+</span> u<span class="op">.</span>y<span class="op">[-</span><span class="dv">1</span><span class="op">,</span><span class="dv">1</span><span class="op">]</span> <span class="op">-</span> u<span class="op">.</span>y<span class="op">[-</span><span class="dv">1</span><span class="op">,-</span><span class="dv">1</span><span class="op">])/(</span><span class="fl">2.</span><span class="op">*</span>Delta<span class="op">)</span> <span class="op">));</span> <span class="co">// D11</span></span>
+<span id="cb7-11"><span class="pp">#if AXI</span></span>
+<span id="cb7-12">    D2temp <span class="op">+=</span> sq<span class="op">((</span>u<span class="op">.</span>y<span class="op">[</span><span class="dv">0</span><span class="op">,</span><span class="dv">0</span><span class="op">]</span> <span class="op">+</span> u<span class="op">.</span>y<span class="op">[-</span><span class="dv">1</span><span class="op">,</span> <span class="dv">0</span><span class="op">])/(</span><span class="dv">2</span><span class="op">*</span>max<span class="op">(</span>y<span class="op">,</span> <span class="fl">1e-20</span><span class="op">)));</span> <span class="co">// D22</span></span>
+<span id="cb7-13"><span class="pp">#endif</span></span>
+<span id="cb7-14">    D2temp <span class="op">+=</span> sq<span class="op">((</span>u<span class="op">.</span>x<span class="op">[]</span> <span class="op">-</span> u<span class="op">.</span>x<span class="op">[-</span><span class="dv">1</span><span class="op">,</span><span class="dv">0</span><span class="op">])/</span>Delta<span class="op">);</span> <span class="co">// D33</span></span>
+<span id="cb7-15">    D2temp <span class="op">+=</span> <span class="fl">2.0</span><span class="op">*</span>sq<span class="op">(</span><span class="fl">0.5</span><span class="op">*(</span> <span class="op">(</span>u<span class="op">.</span>y<span class="op">[]</span> <span class="op">-</span> u<span class="op">.</span>y<span class="op">[-</span><span class="dv">1</span><span class="op">,</span> <span class="dv">0</span><span class="op">])/</span>Delta <span class="op">+</span> <span class="fl">0.5</span><span class="op">*(</span> <span class="op">(</span>u<span class="op">.</span>x<span class="op">[</span><span class="dv">0</span><span class="op">,</span><span class="dv">1</span><span class="op">]</span> <span class="op">-</span> u<span class="op">.</span>x<span class="op">[</span><span class="dv">0</span><span class="op">,-</span><span class="dv">1</span><span class="op">]</span> <span class="op">+</span> u<span class="op">.</span>x<span class="op">[-</span><span class="dv">1</span><span class="op">,</span><span class="dv">1</span><span class="op">]</span> <span class="op">-</span> u<span class="op">.</span>x<span class="op">[-</span><span class="dv">1</span><span class="op">,-</span><span class="dv">1</span><span class="op">])/(</span><span class="fl">2.</span><span class="op">*</span>Delta<span class="op">)</span> <span class="op">)</span> <span class="op">));</span> <span class="co">// D13</span></span>
+<span id="cb7-16"></span>
+<span id="cb7-17">    D2temp <span class="op">=</span> sqrt<span class="op">(</span>D2temp<span class="op">/</span><span class="fl">2.0</span><span class="op">);</span></span>
+<span id="cb7-18"></span>
+<span id="cb7-19">    <span class="cf">if</span> <span class="op">(</span>tauy <span class="op">&gt;</span> <span class="fl">0.</span><span class="op">){</span></span>
+<span id="cb7-20">      muTemp <span class="op">=</span> tauy<span class="op">/(</span><span class="fl">2.0</span><span class="op">*</span>D2temp <span class="op">+</span> epsilon<span class="op">)</span> <span class="op">+</span> mu1<span class="op">*</span>pow<span class="op">((</span><span class="fl">2.0</span><span class="op">*</span>D2temp <span class="op">+</span> epsilon<span class="op">),</span> n<span class="op">-</span><span class="dv">1</span><span class="op">);</span></span>
+<span id="cb7-21">    <span class="op">}</span></span>
+<span id="cb7-22"></span>
+<span id="cb7-23">    muv<span class="op">.</span>x<span class="op">[]</span> <span class="op">=</span> fm<span class="op">.</span>x<span class="op">[]*</span>mu<span class="op">(</span>muTemp<span class="op">,</span> mu2<span class="op">,</span> ff<span class="op">);</span></span>
+<span id="cb7-24">    D2f<span class="op">.</span>x<span class="op">[]</span> <span class="op">=</span> D2temp<span class="op">;</span></span>
+<span id="cb7-25">  <span class="op">}</span></span>
+<span id="cb7-26"></span>
+<span id="cb7-27">  foreach_face<span class="op">(</span>y<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb7-28">    <span class="dt">double</span> ff <span class="op">=</span> <span class="op">(</span>sf<span class="op">[</span><span class="dv">0</span><span class="op">,</span><span class="dv">0</span><span class="op">]</span> <span class="op">+</span> sf<span class="op">[</span><span class="dv">0</span><span class="op">,-</span><span class="dv">1</span><span class="op">])/</span><span class="fl">2.</span><span class="op">;</span></span>
+<span id="cb7-29">    alphav<span class="op">.</span>y<span class="op">[]</span> <span class="op">=</span> fm<span class="op">.</span>y<span class="op">[]/</span>rho<span class="op">(</span>ff<span class="op">);</span></span>
+<span id="cb7-30">    <span class="dt">double</span> muTemp <span class="op">=</span> mu1<span class="op">;</span></span>
+<span id="cb7-31">    face vector muv <span class="op">=</span> mu<span class="op">;</span></span>
+<span id="cb7-32"></span>
+<span id="cb7-33">    <span class="dt">double</span> D2temp <span class="op">=</span> <span class="fl">0.</span><span class="op">;</span></span>
+<span id="cb7-34"></span>
+<span id="cb7-35">    D2temp <span class="op">+=</span> sq<span class="op">((</span>u<span class="op">.</span>y<span class="op">[</span><span class="dv">0</span><span class="op">,</span><span class="dv">0</span><span class="op">]</span> <span class="op">-</span> u<span class="op">.</span>y<span class="op">[</span><span class="dv">0</span><span class="op">,-</span><span class="dv">1</span><span class="op">])/</span>Delta<span class="op">);</span> <span class="co">// D11</span></span>
+<span id="cb7-36"><span class="pp">#if AXI</span></span>
+<span id="cb7-37">    D2temp <span class="op">+=</span> sq<span class="op">((</span>u<span class="op">.</span>y<span class="op">[</span><span class="dv">0</span><span class="op">,</span><span class="dv">0</span><span class="op">]</span> <span class="op">+</span> u<span class="op">.</span>y<span class="op">[</span><span class="dv">0</span><span class="op">,-</span><span class="dv">1</span><span class="op">])/(</span><span class="dv">2</span><span class="op">*</span>max<span class="op">(</span>y<span class="op">,</span> <span class="fl">1e-20</span><span class="op">)));</span> <span class="co">// D22</span></span>
+<span id="cb7-38"><span class="pp">#endif</span></span>
+<span id="cb7-39">    D2temp <span class="op">+=</span> sq<span class="op">(</span><span class="fl">0.5</span><span class="op">*(</span> <span class="op">(</span>u<span class="op">.</span>x<span class="op">[</span><span class="dv">1</span><span class="op">,</span><span class="dv">0</span><span class="op">]</span> <span class="op">-</span> u<span class="op">.</span>x<span class="op">[-</span><span class="dv">1</span><span class="op">,</span><span class="dv">0</span><span class="op">]</span> <span class="op">+</span> u<span class="op">.</span>x<span class="op">[</span><span class="dv">1</span><span class="op">,-</span><span class="dv">1</span><span class="op">]</span> <span class="op">-</span> u<span class="op">.</span>x<span class="op">[-</span><span class="dv">1</span><span class="op">,-</span><span class="dv">1</span><span class="op">])/(</span><span class="fl">2.</span><span class="op">*</span>Delta<span class="op">)</span> <span class="op">));</span> <span class="co">// D33</span></span>
+<span id="cb7-40">    D2temp <span class="op">+=</span> <span class="fl">2.0</span><span class="op">*</span>sq<span class="op">(</span><span class="fl">0.5</span><span class="op">*(</span> <span class="op">(</span>u<span class="op">.</span>x<span class="op">[</span><span class="dv">0</span><span class="op">,</span><span class="dv">0</span><span class="op">]</span> <span class="op">-</span> u<span class="op">.</span>x<span class="op">[</span><span class="dv">0</span><span class="op">,-</span><span class="dv">1</span><span class="op">])/</span>Delta <span class="op">+</span> <span class="fl">0.5</span><span class="op">*(</span> <span class="op">(</span>u<span class="op">.</span>y<span class="op">[</span><span class="dv">1</span><span class="op">,</span><span class="dv">0</span><span class="op">]</span> <span class="op">-</span> u<span class="op">.</span>y<span class="op">[-</span><span class="dv">1</span><span class="op">,</span><span class="dv">0</span><span class="op">]</span> <span class="op">+</span> u<span class="op">.</span>y<span class="op">[</span><span class="dv">1</span><span class="op">,-</span><span class="dv">1</span><span class="op">]</span> <span class="op">-</span> u<span class="op">.</span>y<span class="op">[-</span><span class="dv">1</span><span class="op">,-</span><span class="dv">1</span><span class="op">])/(</span><span class="fl">2.</span><span class="op">*</span>Delta<span class="op">)</span> <span class="op">)</span> <span class="op">));</span> <span class="co">// D13</span></span>
+<span id="cb7-41"></span>
+<span id="cb7-42">    D2temp <span class="op">=</span> sqrt<span class="op">(</span>D2temp<span class="op">/</span><span class="fl">2.0</span><span class="op">);</span></span>
+<span id="cb7-43"></span>
+<span id="cb7-44">    <span class="cf">if</span> <span class="op">(</span>tauy <span class="op">&gt;</span> <span class="fl">0.</span><span class="op">){</span></span>
+<span id="cb7-45">      muTemp <span class="op">=</span> tauy<span class="op">/(</span><span class="fl">2.0</span><span class="op">*</span>D2temp <span class="op">+</span> epsilon<span class="op">)</span> <span class="op">+</span> mu1<span class="op">*</span>pow<span class="op">((</span><span class="fl">2.0</span><span class="op">*</span>D2temp <span class="op">+</span> epsilon<span class="op">),</span> n<span class="op">-</span><span class="dv">1</span><span class="op">);</span></span>
+<span id="cb7-46">    <span class="op">}</span></span>
+<span id="cb7-47"></span>
+<span id="cb7-48">    muv<span class="op">.</span>y<span class="op">[]</span> <span class="op">=</span> fm<span class="op">.</span>y<span class="op">[]*</span>mu<span class="op">(</span>muTemp<span class="op">,</span> mu2<span class="op">,</span> ff<span class="op">);</span></span>
+<span id="cb7-49">    D2f<span class="op">.</span>y<span class="op">[]</span> <span class="op">=</span> D2temp<span class="op">;</span></span>
+<span id="cb7-50">  <span class="op">}</span></span>
+<span id="cb7-51"></span>
+<span id="cb7-52"><span class="pp">#if dimension ==</span></span>
+<span id="cb7-53">  error<span class="op">(</span><span class="st">&quot;3D not implemented yet&quot;</span><span class="op">);</span></span>
+<span id="cb7-54"><span class="pp">#endif</span></span></code></pre></div></div>
+                <p>I also calculate a cell-centered scalar D2, where I
+                store <span
+                class="math inline">\(\|\mathbf{\mathcal{D}}\|\)</span>.
+                This can also be used for refimnement to accurately
+                refine the fake-yield surfaces.</p>
+                <div class="code-block-container"><div class="code-block-container"><pre
+                class="sourceCode c"><code class="sourceCode c"><span id="cb8-1">  foreach<span class="op">(){</span></span>
+<span id="cb8-2">    rhov<span class="op">[]</span> <span class="op">=</span> cm<span class="op">[]*</span>rho<span class="op">(</span>sf<span class="op">[]);</span></span>
+<span id="cb8-3">    D2<span class="op">[]</span> <span class="op">=</span> f<span class="op">[]*(</span>D2f<span class="op">.</span>x<span class="op">[]+</span>D2f<span class="op">.</span>y<span class="op">[]+</span>D2f<span class="op">.</span>x<span class="op">[</span><span class="dv">1</span><span class="op">,</span><span class="dv">0</span><span class="op">]+</span>D2f<span class="op">.</span>y<span class="op">[</span><span class="dv">0</span><span class="op">,</span><span class="dv">1</span><span class="op">])/</span><span class="fl">4.</span><span class="op">;</span></span>
+<span id="cb8-4">  <span class="op">}</span></span>
+<span id="cb8-5"><span class="pp">#if TREE</span></span>
+<span id="cb8-6">  sf<span class="op">.</span>prolongation <span class="op">=</span> fraction_refine<span class="op">;</span></span>
+<span id="cb8-7">  sf<span class="op">.</span>dirty <span class="op">=</span> <span class="kw">true</span><span class="op">;</span> <span class="co">// boundary conditions need to be updated</span></span>
+<span id="cb8-8"><span class="pp">#endif</span></span>
+<span id="cb8-9"><span class="op">}</span></span></code></pre></div></div>
+            </div>
+        </main>
+<a id="" href="#"></a>
+        <footer class="site-footer">
+            <div class="footer-left">
+              <a href="http://basilisk.fr/sandbox/vatsal/" target="_blank">
+                <img src="../assets/logos/logoBasilisk_TransparentBackground.png" alt="Basilisk C" class="footer-logo">
+              </a>
+              <a href="https://pof.tnw.utwente.nl/" target="_blank">
+                <img src="../assets/logos/LogoPof_transparent_white.png" alt="Physics of Fluids" class="footer-logo pof-logo">
+              </a>
+              <a href="https://www.utwente.nl/" target="_blank">
+                <img src="../assets/logos/UT_Logo_2400_Sta_White_EN.png" alt="University of Twente" class="footer-logo">
+              </a>
+              <a href="https://www.vatsalsanjay.com/" target="_blank">
+                <img src="../assets/logos/Logo_Vatsal_v3_OutLine.png" alt="Vatsal Sanjay" class="footer-logo">
+              </a>
+            </div>
+            <div class="footer-center">
+              <p class="copyright-text">
+                &copy; Copyright<br>
+                CoMPhy Lab 2025
+              </p>
+            </div>
+            <div class="footer-right">
+              <a href="https://scholar.google.com/citations?user=tHb_qZoAAAAJ&hl=en" target="_blank" aria-label="Google Scholar Profile">
+                <i class="ai ai-google-scholar" style="font-size: 2.5em; color: white;"></i>
+              </a>
+              <a href="https://github.com/comphy-lab" target="_blank" aria-label="GitHub Organization">
+                <i class="fa-brands fa-github" style="font-size: 2.5em; color: white;"></i>
+              </a>
+              <a href="https://www.youtube.com/@CoMPhyLab" target="_blank" aria-label="YouTube Channel">
+                <i class="fa-brands fa-youtube" style="font-size: 2.5em; color: white;"></i>
+              </a>
+              <a href="https://x.com/VatsalSanjay" target="_blank" aria-label="X (Twitter) Profile">
+                <i class="fa-brands fa-x-twitter" style="font-size: 2.5em; color: white;"></i>
+              </a>
+              <a href="https://bsky.app/profile/comphy-lab.org" target="_blank" aria-label="Bluesky Profile">
+                <i class="fa-brands fa-bluesky" style="font-size: 2.5em; color: white;"></i>
+              </a>
+              <a href="https://github.com/comphy-lab/comphy-lab.github.io" class="edit-link" aria-label="Edit this page on GitHub">
+                <i class="fa-brands fa-github"></i> Edit this page
+              </a>
+            </div>
+          </footer>
+    </div>  
+<a id="" href="#"></a>
+    <!-- Command Palette -->
+    <div id="simple-command-palette" class="simple-command-palette" style="display: none;">
+        <div class="simple-command-palette-backdrop"></div>
+        <div class="simple-command-palette-modal">
+            <input type="text" id="command-palette-input" placeholder="Type a command..." autocomplete="off">
+            <div id="command-palette-results" class="command-palette-results"></div>
+            <div class="command-palette-footer">
+                <span class="command-palette-footer-item"><kbd>↑</kbd> <kbd>↓</kbd> to navigate</span>
+                <span class="command-palette-footer-item"><kbd>enter</kbd> to select</span>
+                <span class="command-palette-footer-item"><kbd>esc</kbd> to close</span>
+            </div>
+        </div>
+    </div>
+<a id="" href="#"></a>
+
+    <script type="text/javascript">
+    document.addEventListener('DOMContentLoaded', function() {
+        // Add copy button to each code block container
+        const codeBlocks = document.querySelectorAll('.code-block-container pre');
+        codeBlocks.forEach(function(codeBlock, index) {
+            // Create button element
+            const button = document.createElement('button');
+            button.className = 'copy-button';
+            button.textContent = 'Copy';
+            button.setAttribute('aria-label', 'Copy code to clipboard');
+            button.setAttribute('data-copy-state', 'copy');
+            
+            // Get the code block container (parent of the pre)
+            const container = codeBlock.parentNode;
+            
+            // Add the button to the container
+            container.appendChild(button);
+            
+            // Set up click event
+            button.addEventListener('click', function() {
+                // Create a textarea element to copy from
+                const textarea = document.createElement('textarea');
+                // Get the text content from the pre element (the actual code)
+                textarea.value = codeBlock.textContent;
+                document.body.appendChild(textarea);
+                textarea.select();
+                
+                try {
+                    // Execute copy command
+                    document.execCommand('copy');
+                    // Update button state
+                    button.textContent = 'Copied!';
+                    button.classList.add('copied');
+                    
+                    // Reset button state after 2 seconds
+                    setTimeout(function() {
+                        button.textContent = 'Copy';
+                        button.classList.remove('copied');
+                    }, 2000);
+                } catch (err) {
+                    console.error('Copy failed:', err);
+                    button.textContent = 'Error!';
+                }
+                
+                // Clean up
+                document.body.removeChild(textarea);
+            });
+        });
+    });
+    </script>
+        </body>
+</html>
