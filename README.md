@@ -26,16 +26,7 @@ This repository contains the simulation code and analysis for studying the dynam
 │   ├── getData.c               Data extraction utility
 │   ├── getFacets.c             Facet extraction utility
 │   └── video.py                Python script for video/visualization
-├── docs/                       Project documentation and static site
-│   ├── index.html              Main documentation page
-│   ├── assets/                 Images, CSS, JS, and logos for docs
-│   ├── postProcess/            Docs for post-processing tools
-│   ├── simulationCases/        Docs for simulation cases
-│   └── src-local/              Docs for custom source files
 ├── reset_install_requirements.sh  Script to set up Basilisk and dependencies
-├── .project_config             Project environment configuration
-├── LICENSE                     License information
-└── README.md                   Project overview and instructions
 ```
 
 
