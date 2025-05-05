@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="base-url" content="..">
+    <title>Herschel-Bulkley Worthington Jets & Droplets Produced by Bursting Bubbles | Herschel-Bulkley Worthington Jets & Droplets Produced by Bursting Bubbles</title>
+    
+    <!-- Critical CSS for fastest paint -->
+    <style>
+        .s-intro__title {
+            visibility: visible;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        }
+        .s-header {
+            visibility: visible;
+        }
+    </style>
+
+    <!-- Preload critical resources -->
+    <link rel="preload" href="./assets/js/main.js" as="script">
+    <link rel="preload" href="./assets/css/fontello/css/fontello.css" as="style">
+    <link rel="preload" href="./assets/css/academicons-1.7.0/css/academicons.min.css" as="style">
+    
+    <!-- Base stylesheet with proper path resolution for local deployment -->
+    <link rel="stylesheet" href="./assets/css/styles.css">
+    <link rel="stylesheet" href="./assets/css/custom_styles.css">
+    <link rel="stylesheet" href="./assets/css/fontello/css/fontello.css">
+    <link rel="stylesheet" href="./assets/css/academicons-1.7.0/css/academicons.min.css">
+    <link rel="stylesheet" href="./assets/css/command-palette.css">
+    <!-- Font Awesome for icons on all documentation pages -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <!-- Favicon -->
+    <link rel="apple-touch-icon" sizes="180x180" href="./assets/favicon/apple-touch-icon.png">
+    <link rel="apple-touch-icon-precomposed" sizes="180x180" href="./assets/favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="./assets/favicon/favicon-96x96.png">
+    <link rel="icon" type="image/svg+xml" href="./assets/favicon/favicon.svg">
+    <link rel="manifest" href="./assets/favicon/site.webmanifest">
+    <link rel="shortcut icon" href="./assets/favicon/favicon.ico">
+    <link rel="icon" href="./assets/favicon/favicon.ico">
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="theme-color" content="#ffffff">
+    <meta name="apple-mobile-web-app-title" content="CoMPhy Lab">
+    
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="Computational fluid dynamics simulations using Basilisk C framework.">
+    <meta name="author" content="CoMPhy Lab">
+    <meta name="robots" content="index, follow">
+    <meta name="keywords" content="fluid dynamics, CFD, Basilisk, multiphase flow, computational physics">
+
+    <!-- Font dependencies with font-display: swap -->
+    <style>
+        @font-face {
+            font-display: swap;
+            font-family: 'System Font';
+            src: local('system-ui');
+        }
+    </style>
+    <link rel="stylesheet" href="./assets/css/fontello/css/fontello.css" media="print" onload="this.media='all'">
+    <link rel="stylesheet" href="./assets/css/academicons-1.7.0/css/academicons.min.css" media="print" onload="this.media='all'">
+    <noscript>
+        <link rel="stylesheet" href="./assets/css/fontello/css/fontello.css">
+        <link rel="stylesheet" href="./assets/css/academicons-1.7.0/css/academicons.min.css">
+    </noscript>
+
+    <!-- Site styles -->
+    <link rel="stylesheet" href="./assets/css/vendor.css">
+    <link rel="stylesheet" href="./assets/css/styles.css">
+    <link rel="stylesheet" href="./assets/css/custom_styles.css">
+    <link rel="stylesheet" href="./assets/css/command-palette.css" media="print" onload="this.media='all'">
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" id="MathJax-script"></script>   
+    <!-- Fuse.js for search functionality -->
+    <script defer src="https://cdn.jsdelivr.net/npm/fuse.js@6.6.2/dist/fuse.min.js"></script>
+    
+    <!-- jQuery and UI -->
+    <script src="./assets/js/jquery.min.js"></script>
+    <script src="./assets/js/jquery-ui.packed.js"></script>
+    <script src="./assets/js/plots.js"></script>
+    
+    <!-- Command palette -->
+    <script defer src="./assets/js/command-palette.js"></script>
+    <script defer src="./assets/js/command-data.js"></script>
+    <script defer src="./assets/js/main.js"></script>
+    <script defer src="./assets/js/theme-toggle.js"></script>
+
+    <script>
+        // Load Font Awesome with proper environment detection and fallbacks
+        function loadStylesheet(href) {
+          const link = document.createElement('link');
+          link.rel = 'stylesheet';
+          link.href = href;
+          link.crossOrigin = 'anonymous';
+          link.onerror = (e) => {
+            console.error(`Failed to load stylesheet: `);
+            console.log('Trying alternative Font Awesome source...');
+          };
+          document.head.appendChild(link);
+          return link;
+        }
+        
+        // Check if we're on localhost
+        if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+          // Use hardcoded version numbers for reliable loading
+          
+          // Load Font Awesome using multiple CDNs to maximize reliability for local development
+          loadStylesheet('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css');
+          // Backup CDN if the first one fails
+          loadStylesheet('https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.7.2/css/all.min.css');
+          // Final local fallback - ensures it will work on any localhost environment
+          loadStylesheet('https://use.fontawesome.com/releases/v6.7.2/css/all.css');
+        } else {
+          // Use Kit for production with defer
+          var script = document.createElement('script');
+          script.src = 'https://kit.fontawesome.com/b1cfd9ca75.js';
+          script.crossOrigin = 'anonymous';
+          script.defer = true;
+          document.head.appendChild(script);
+        }
+      </script>
+
+    <script>
+        document.documentElement.classList.remove('no-js');
+        document.documentElement.classList.add('js');
+    </script>
+
+        true
+    </head>
+<body id="top">
+<script>window.repoName = "BurstingBubble_Herschel-Bulkley";</script>
+
+
+    <div id="preloader">
+        <div id="loader"></div>
+    </div>
+
+    <div id="page" class="s-pagewrap">
+        <header class="s-header">
+            <div class="s-header__logo">
+                <a class="logo" href="/">
+                    <img src="./assets/logos/CoMPhy-Lab-no-name.png" alt="CoMPhy Lab">
+                </a>
+                <a class="documentation-button" href="/BurstingBubble_Herschel-Bulkley">
+                    <i class="fa-solid fa-book-open"></i>
+                    <span>BurstingBubble_Herschel-Bulkley</span>
+                </a>
+            </div>
+            <a class="s-header__menu-toggle" href="#0">
+                <span class="s-header__menu-text">Menu</span>
+                <span class="s-header__menu-icon"></span>
+            </a>
+            <nav class="s-header__nav">
+                <a href="#0" class="s-header__nav-close-btn"><span>Close</span></a>
+                <ul class="s-header__nav-list">
+                    <li style="background: none;">
+                        <div class="theme-toggle" id="theme-toggle" aria-label="Toggle dark/light theme">
+                            <svg class="theme-toggle-icon moon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                            </svg>
+                            <svg class="theme-toggle-icon sun" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="5"></circle>
+                                <line x1="12" y1="1" x2="12" y2="3"></line>
+                                <line x1="12" y1="21" x2="12" y2="23"></line>
+                                <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                                <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                                <line x1="1" y1="12" x2="3" y2="12"></line>
+                                <line x1="21" y1="12" x2="23" y2="12"></line>
+                                <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                                <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                            </svg>
+                        </div>
+                    </li>
+                    <li style="background: none;"><a href="https://scholar.google.com/citations?user=tHb_qZoAAAAJ&hl=en" style="background: none; padding: 0;" aria-label="Google Scholar Profile"><i class="ai ai-google-scholar" style="font-size: 1.75em;"></i></a></li>
+                    <li style="background: none;"><a href="https://github.com/comphy-lab" style="background: none; padding: 0;" aria-label="GitHub Organization"><i class="fa-brands fa-github" style="font-size: 1.75em"></i></a></li>
+                    <li><a href="https://comphy-lab.org/#about" class="smoothscroll">About</a></li>
+                    <li><a href="https://comphy-lab.org/team/">Team</a></li>
+                    <li><a href="https://comphy-lab.org/research">Research</a></li>
+                    <li><a href="https://comphy-lab.org/teaching">Teaching</a></li>
+                    <li><a href="https://comphy-lab.org/join">Join Us</a></li>
+                    <li><a href="https://blogs.comphy-lab.org/">Blog</a></li>
+                    <li style="background: none;"><a href="https://bsky.app/profile/comphy-lab.org" style="background: none; padding: 0;" aria-label="Bluesky Profile"><i class="fa-brands fa-bluesky" style="font-size: 1.75em; color: #0085ff;"></i></a></li>
+                    <!-- Command Palette Button (Styled like search) -->
+                    <li class="command-palette-button">
+                        <div class="command-wrapper">
+                            <button class="command-k-style-btn" id="command-palette-btn" aria-label="Open command palette">
+                                <span class="default-theme-text">ctrl K</span>
+                                <span class="mac-theme-text">⌘ K</span>
+                                <i class="fa-solid fa-magnifying-glass search-icon"></i>
+                            </button>
+                        </div>
+                    </li>
+                </ul>
+            </nav>
+        </header>
+
+        <!-- Main content -->
+        <main class="content">
+            
+            <div class="page-content">
+                
+                                
+                
+                <h1
+                id="herschel-bulkley-worthington-jets-droplets-produced-by-bursting-bubbles">Herschel-Bulkley
+                Worthington Jets &amp; Droplets Produced by Bursting
+                Bubbles</h1>
+                <p><a
+                href="https://publish.obsidian.md/comphy-lab/Herschel%E2%80%93Bulkley+formulation"><img
+                src="https://img.shields.io/badge/Documentation-Link-purple?style=flat&amp;logo=obsidian"
+                alt="Documentation" /></a> <a
+                href="https://youtu.be/NmvCVsiEZIA"><img
+                src="https://img.shields.io/badge/Demo-YouTube-red?style=flat&amp;logo=youtube"
+                alt="Demo" /></a> <a href="LICENSE"><img
+                src="https://img.shields.io/github/license/comphy-lab/BurstingBubble_Herschel-Bulkley?style=flat"
+                alt="License" /></a> <img
+                src="https://img.shields.io/github/repo-size/comphy-lab/BurstingBubble_Herschel-Bulkley"
+                alt="GitHub repo size" /> <img
+                src="https://img.shields.io/github/last-commit/comphy-lab/BurstingBubble_Herschel-Bulkley"
+                alt="GitHub last commit" /> <a
+                href="https://github.com/comphy-lab/BurstingBubble_Herschel-Bulkley/issues"><img
+                src="https://img.shields.io/github/issues/comphy-lab/BurstingBubble_Herschel-Bulkley"
+                alt="GitHub issues" /></a> <a
+                href="https://doi.org/10.5281/zenodo.14585953"><img
+                src="https://zenodo.org/badge/910477928.svg"
+                alt="DOI" /></a></p>
+                <p>This repository contains the simulation code and
+                analysis for studying the dynamics of Herschel-Bulkley
+                Worthington jets and droplets produced by bursting
+                bubbles. The code uses the Basilisk framework to
+                simulate bubble cavity collapse in non-Newtonian media,
+                examining how power-law index, yield stress, and
+                viscosity affect jet and droplet formation.</p>
+                <div class="repository-structure">
+                <ul>
+                <li><strong>basilisk/src/</strong> - Core Basilisk CFD
+                library (reference only, do not modify)</li>
+                <li><strong><a
+                href="simulationCases">simulationCases/</a></strong> -
+                Simulation cases and input/output data
+                <ul>
+                <li><strong><a
+                href="simulationCases/burstingBubbleHB.c.html">burstingBubbleHB.c</a></strong>
+                - Main Herschel-Bulkley bursting bubble simulation</li>
+                <li><strong><a
+                href="simulationCases/initial-condition-test.ipynb.html">initial-condition-test.ipynb</a></strong>
+                - Jupyter notebook for initial condition tests</li>
+                <li><strong><a
+                href="simulationCases/Makefile.html">Makefile</a></strong>
+                - Makefile for compiling/running cases</li>
+                <li><strong><a
+                href="simulationCases/runMake.sh.html">runMake.sh</a></strong>
+                - Helper script for running make</li>
+                </ul></li>
+                <li><strong><a href="src-local">src-local/</a></strong>
+                - Custom header files extending Basilisk functionality
+                <ul>
+                <li><strong><a
+                href="src-local/two-phaseVP-HB.h.html">two-phaseVP-HB.h</a></strong>
+                - Herschel-Bulkley two-phase flow model</li>
+                </ul></li>
+                <li><strong><a
+                href="postProcess">postProcess/</a></strong> -
+                Project-specific post-processing tools
+                <ul>
+                <li><strong><a
+                href="postProcess/getData.c.html">getData.c</a></strong>
+                - Data extraction utility</li>
+                <li><strong><a
+                href="postProcess/getFacets.c.html">getFacets.c</a></strong>
+                - Facet extraction utility</li>
+                <li><strong><a
+                href="postProcess/video.py.html">video.py</a></strong> -
+                Python script for video/visualization</li>
+                </ul></li>
+                <li><strong><a
+                href="reset_install_requirements.sh.html">reset_install_requirements.sh</a></strong>
+                - Script to set up Basilisk and dependencies</li>
+                </ul>
+                </div>
+                <h2 id="overview">Overview</h2>
+                <p>The project investigates how non-Newtonian behavior
+                influences bubble bursting dynamics by exploring the
+                phase space of effective Ohnesorge number, power-law
+                index, and plasto-capillary number using volume of
+                fluid-based finite volume simulations. The results
+                demonstrate how shear-thinning/thickening behavior and
+                yield stress significantly influence the overall
+                dynamics through the interplay of viscous and plastic
+                effects.</p>
+                <h2 id="installation-and-setup">Installation and
+                Setup</h2>
+                <p>To ensure you have the necessary tools and a fresh
+                Basilisk installation, use the provided script:</p>
+                <div class="code-block-container"><div class="code-block-container"><pre
+                class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">./reset_install_requirements.sh</span></span></code></pre></div></div>
+                <h3 id="function">Function</h3>
+                <p>This script checks for Basilisk installation and
+                compiles it if not present.</p>
+                <h3 id="os-compatibility">OS Compatibility</h3>
+                <p>Designed for macOS. If you encounter issues on Linux,
+                please open a GitHub issue.</p>
+                <h3 id="dependencies">Dependencies</h3>
+                <ul>
+                <li>Basilisk C is fetched and built automatically.</li>
+                <li>Xcode Command Line Tools (macOS) or equivalent
+                compiler toolchain (Linux) are required.</li>
+                </ul>
+                <h3 id="environment-setup">Environment Setup</h3>
+                <p>After running the script, a
+                <code>.project_config</code> file is created, setting
+                <code>BASILISK</code> and <code>PATH</code>
+                automatically.</p>
+                <p>If you have previously installed Basilisk or changed
+                dependencies, re-run the script with
+                <code>--hard</code>:</p>
+                <div class="code-block-container"><div class="code-block-container"><pre
+                class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">./reset_install_requirements.sh</span> <span class="at">--hard</span></span></code></pre></div></div>
+                <h2 id="running-the-code">Running the Code</h2>
+                <h3 id="recommended-method-using-makefile">Recommended
+                Method: Using Makefile</h3>
+                <p>The easiest way to compile and run the code is using
+                the Makefile approach:</p>
+                <ol type="1">
+                <li>Navigate to the <code>testCases</code>
+                directory:</li>
+                </ol>
+                <div class="code-block-container"><div class="code-block-container"><pre
+                class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> testCases</span></code></pre></div></div>
+                <ol start="2" type="1">
+                <li>Compile and run using make (this runs the code
+                interactively using the browser):</li>
+                </ol>
+                <div class="code-block-container"><div class="code-block-container"><pre
+                class="sourceCode bash"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="va">CFLAGS</span><span class="op">=</span>-DDISPLAY=-1 <span class="fu">make</span> burstingBubbleVE.tst</span></code></pre></div></div>
+                <p>To run the code non-interactively, use the following
+                command:</p>
+                <div class="code-block-container"><div class="code-block-container"><pre
+                class="sourceCode bash"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">make</span> burstingBubbleVE.tst</span></code></pre></div></div>
+                <h3
+                id="alternative-method-direct-compilation">Alternative
+                Method: Direct Compilation</h3>
+                <p>You can compile the code directly using
+                <code>qcc</code> in two ways:</p>
+                <ol type="1">
+                <li>Using include paths (recommended):</li>
+                </ol>
+                <div class="code-block-container"><div class="code-block-container"><pre
+                class="sourceCode bash"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="ex">qcc</span> <span class="at">-O2</span> <span class="at">-Wall</span> <span class="at">-disable-dimensions</span> <span class="at">-I</span><span class="va">$(</span><span class="ex">PWD</span><span class="va">)</span>/src-local <span class="at">-I</span><span class="va">$(</span><span class="ex">PWD</span><span class="va">)</span>/../src-local burstingBubbleVE.c <span class="at">-o</span> burstingBubbleVE <span class="at">-lm</span></span></code></pre></div></div>
+                <ol start="2" type="1">
+                <li>Without include paths:</li>
+                </ol>
+                <div class="code-block-container"><div class="code-block-container"><pre
+                class="sourceCode bash"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="ex">qcc</span> <span class="at">-O2</span> <span class="at">-Wall</span> <span class="at">-disable-dimensions</span> burstingBubbleVE.c <span class="at">-o</span> burstingBubbleVE <span class="at">-lm</span></span></code></pre></div></div>
+                <p><strong>Note</strong>: If using method 2, you must
+                first manually copy the <code>src-local</code> folder to
+                your running directory.</p>
+                <h3 id="local-execution">Local Execution</h3>
+                <p>MacOS:</p>
+                <div class="code-block-container"><div class="code-block-container"><pre
+                class="sourceCode bash"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># First source the configuration</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="bu">source</span> .project_config</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Compile using include paths (recommended)</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="ex">qcc</span> <span class="at">-O2</span> <span class="at">-Wall</span> <span class="at">-disable-dimensions</span> <span class="at">-I</span><span class="va">$(</span><span class="ex">PWD</span><span class="va">)</span>/src-local <span class="at">-I</span><span class="va">$(</span><span class="ex">PWD</span><span class="va">)</span>/../src-local burstingBubbleVE.c <span class="at">-o</span> burstingBubbleVE <span class="at">-lm</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Or compile without include paths (requires manually copying src-local folder)</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="ex">qcc</span> <span class="at">-O2</span> <span class="at">-Wall</span> <span class="at">-disable-dimensions</span> burstingBubbleVE.c <span class="at">-o</span> burstingBubbleVE <span class="at">-lm</span></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Run the executable, only supports serial execution</span></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a><span class="ex">./burstingBubbleVE</span></span></code></pre></div></div>
+                <p>Linux:</p>
+                <div class="code-block-container"><div class="code-block-container"><pre
+                class="sourceCode bash"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># First source the configuration</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="bu">source</span> .project_config</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Compile using include paths (recommended)</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="ex">qcc</span> <span class="at">-O2</span> <span class="at">-Wall</span> <span class="at">-disable-dimensions</span> <span class="at">-fopenmp</span> <span class="at">-I</span><span class="va">$(</span><span class="ex">PWD</span><span class="va">)</span>/src-local <span class="at">-I</span><span class="va">$(</span><span class="ex">PWD</span><span class="va">)</span>/../src-local burstingBubbleVE.c <span class="at">-o</span> burstingBubbleVE <span class="at">-lm</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Or compile without include paths (requires manually copying src-local folder)</span></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a><span class="ex">qcc</span> <span class="at">-O2</span> <span class="at">-Wall</span> <span class="at">-disable-dimensions</span> <span class="at">-fopenmp</span> burstingBubbleVE.c <span class="at">-o</span> burstingBubbleVE <span class="at">-lm</span></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Set the number of OpenMP threads</span></span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a><span class="bu">export</span> <span class="va">OMP_NUM_THREADS</span><span class="op">=</span>4</span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Run the executable</span></span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a><span class="ex">./burstingBubbleVE</span></span></code></pre></div></div>
+                <h3 id="hpc-cluster-execution-e.g.-snellius">HPC Cluster
+                Execution (e.g., Snellius)</h3>
+                <p>For cluster environments, it is strongly recommended
+                to manually copy the <code>src-local</code> folder to
+                your working directory to ensure reliable compilation
+                across different cluster configurations:</p>
+                <ol type="1">
+                <li>First, copy the required files:</li>
+                </ol>
+                <div class="code-block-container"><div class="code-block-container"><pre
+                class="sourceCode bash"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> <span class="at">-r</span> /path/to/original/src-local .</span></code></pre></div></div>
+                <ol start="2" type="1">
+                <li>Compile the code for MPI:</li>
+                </ol>
+                <div class="code-block-container"><div class="code-block-container"><pre
+                class="sourceCode bash"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="va">CC99</span><span class="op">=</span><span class="st">&#39;mpicc -std=c99&#39;</span> <span class="ex">qcc</span> <span class="at">-Wall</span> <span class="at">-O2</span> <span class="at">-D_MPI</span><span class="op">=</span>1 <span class="at">-disable-dimensions</span> burstingBubbleVE.c <span class="at">-o</span> burstingBubbleVE <span class="at">-lm</span></span></code></pre></div></div>
+                <ol start="3" type="1">
+                <li>Create a SLURM job script (e.g.,
+                <code>run_simulation.sh</code>):</li>
+                </ol>
+                <div class="code-block-container"><div class="code-block-container"><pre
+                class="sourceCode bash"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --nodes=1</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --ntasks=32</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --time=1:00:00</span></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --partition=genoa</span></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --mail-type=ALL</span></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --mail-user=v.sanjay@utwente.nl</span></span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a><span class="ex">srun</span> <span class="at">--mpi</span><span class="op">=</span>pmi2 <span class="at">-n</span> 32 <span class="at">--gres</span><span class="op">=</span>cpu:32 <span class="at">--mem-per-cpu</span><span class="op">=</span>1750mb burstingBubbleVE</span></code></pre></div></div>
+                <ol start="4" type="1">
+                <li>Submit the job:</li>
+                </ol>
+                <div class="code-block-container"><div class="code-block-container"><pre
+                class="sourceCode bash"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="ex">sbatch</span> run_simulation.sh</span></code></pre></div></div>
+                <h3 id="additional-running-scripts">Additional Running
+                Scripts</h3>
+                <p>The <code>z_extras/running</code> directory contains
+                supplementary materials and post-processing tools used
+                in the analysis. This includes C-based data extraction
+                utilities, Python visualization scripts, and analysis
+                notebooks. These tools were used to process simulation
+                outputs and generate figures for the study. For detailed
+                documentation of these tools, see the <a
+                href="z_extras/README.md.html">README</a> in the
+                <code>z_extras</code> directory.</p>
+                <h2 id="contributing">Contributing</h2>
+                <p><strong>Issues &amp; Contributions</strong>: Please
+                file bug reports, feature requests, or pull requests on
+                <a
+                href="https://github.com/comphy-lab/BurstingBubble_Herschel-Bulkley/issues">GitHub</a>.
+                When creating an issue, please:</p>
+                <ul>
+                <li>For bug reports: Include the error message, OS
+                version, and steps to reproduce the issue</li>
+                <li>For feature requests: Clearly describe the proposed
+                feature and its use case</li>
+                <li>For questions: Check existing issues and
+                documentation first</li>
+                </ul>
+                <p>We welcome contributions! Please feel free to submit
+                a Pull Request.</p>
+                <h2 id="reset-install-requirements-script">Reset Install
+                Requirements Script</h2>
+                <p>The <code>reset_install_requirements.sh</code> script
+                is designed to reset the installation requirements for
+                the project. This can be useful when you want to ensure
+                that all dependencies are fresh and up-to-date.</p>
+                <h3 id="purpose">Purpose</h3>
+                <p>The script re-installs all required packages as
+                specified in the requirements file, ensuring that the
+                project’s dependencies are up-to-date and
+                consistent.</p>
+                <h3 id="usage">Usage</h3>
+                <p>To run the script, use the following command in your
+                terminal:</p>
+                <div class="code-block-container"><div class="code-block-container"><pre
+                class="sourceCode bash"><code class="sourceCode bash"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">bash</span> reset_install_requirements.sh</span></code></pre></div></div>
+                <p>Make sure to have the necessary permissions to
+                execute the script.</p>
+                <h2 id="citation">Citation</h2>
+                <p>If you use this code in your research, please
+                cite:</p>
+                <h3 id="software">Software</h3>
+                <!-- Add software citation when available -->
+                <h2 id="authors">Authors</h2>
+                <ul>
+                <li>Vatsal Sanjay (University of Twente), <a
+                href="mailto:vatsalsanjay@gmail.com">vatsalsanjay@gmail.com</a></li>
+                </ul>
+                <h2 id="license">License</h2>
+                <p>This project is licensed under standard academic
+                terms. Please cite the paper and software if you use
+                this code in your research.</p>
+                <h2 id="generated-documentation">Generated
+                Documentation</h2>
+                <h3 id="root-directory">Root Directory</h3>
+                <ul>
+                <li><a
+                href="reset_install_requirements.sh.html">reset_install_requirements.sh</a></li>
+                </ul>
+                <h3 id="postprocess">postProcess</h3>
+                <ul>
+                <li><a
+                href="postProcess/getData.c.html">postProcess/getData.c</a></li>
+                <li><a
+                href="postProcess/getFacets.c.html">postProcess/getFacets.c</a></li>
+                <li><a
+                href="postProcess/video.py.html">postProcess/video.py</a></li>
+                </ul>
+                <h3 id="simulationcases">simulationCases</h3>
+                <ul>
+                <li><a
+                href="simulationCases/Makefile.html">simulationCases/Makefile</a></li>
+                <li><a
+                href="simulationCases/burstingBubbleHB.c.html">simulationCases/burstingBubbleHB.c</a></li>
+                <li><a
+                href="simulationCases/initial-condition-test.ipynb.html">simulationCases/initial-condition-test.ipynb</a></li>
+                <li><a
+                href="simulationCases/runMake.sh.html">simulationCases/runMake.sh</a></li>
+                </ul>
+                <h3 id="src-local">src-local</h3>
+                <ul>
+                <li><a
+                href="src-local/two-phaseVP-HB.h.html">src-local/two-phaseVP-HB.h</a></li>
+                </ul>
+            </div>
+        </main>
+
+        <footer class="site-footer">
+            <div class="footer-left">
+              <a href="http://basilisk.fr/sandbox/vatsal/" target="_blank">
+                <img src="./assets/logos/logoBasilisk_TransparentBackground.png" alt="Basilisk C" class="footer-logo">
+              </a>
+              <a href="https://pof.tnw.utwente.nl/" target="_blank">
+                <img src="./assets/logos/LogoPof_transparent_white.png" alt="Physics of Fluids" class="footer-logo pof-logo">
+              </a>
+              <a href="https://www.utwente.nl/" target="_blank">
+                <img src="./assets/logos/UT_Logo_2400_Sta_White_EN.png" alt="University of Twente" class="footer-logo">
+              </a>
+              <a href="https://www.vatsalsanjay.com/" target="_blank">
+                <img src="./assets/logos/Logo_Vatsal_v3_OutLine.png" alt="Vatsal Sanjay" class="footer-logo">
+              </a>
+            </div>
+            <div class="footer-center">
+              <p class="copyright-text">
+                &copy; Copyright<br>
+                CoMPhy Lab 2025
+              </p>
+            </div>
+            <div class="footer-right">
+              <a href="https://scholar.google.com/citations?user=tHb_qZoAAAAJ&hl=en" target="_blank" aria-label="Google Scholar Profile">
+                <i class="ai ai-google-scholar" style="font-size: 2.5em; color: white;"></i>
+              </a>
+              <a href="https://github.com/comphy-lab" target="_blank" aria-label="GitHub Organization">
+                <i class="fa-brands fa-github" style="font-size: 2.5em; color: white;"></i>
+              </a>
+              <a href="https://www.youtube.com/@CoMPhyLab" target="_blank" aria-label="YouTube Channel">
+                <i class="fa-brands fa-youtube" style="font-size: 2.5em; color: white;"></i>
+              </a>
+              <a href="https://x.com/VatsalSanjay" target="_blank" aria-label="X (Twitter) Profile">
+                <i class="fa-brands fa-x-twitter" style="font-size: 2.5em; color: white;"></i>
+              </a>
+              <a href="https://bsky.app/profile/comphy-lab.org" target="_blank" aria-label="Bluesky Profile">
+                <i class="fa-brands fa-bluesky" style="font-size: 2.5em; color: white;"></i>
+              </a>
+              <a href="https://github.com/comphy-lab/comphy-lab.github.io" class="edit-link" aria-label="Edit this page on GitHub">
+                <i class="fa-brands fa-github"></i> Edit this page
+              </a>
+            </div>
+          </footer>
+    </div>  
+
+    <!-- Command Palette -->
+    <div id="simple-command-palette" class="simple-command-palette" style="display: none;">
+        <div class="simple-command-palette-backdrop"></div>
+        <div class="simple-command-palette-modal">
+            <input type="text" id="command-palette-input" placeholder="Type a command..." autocomplete="off">
+            <div id="command-palette-results" class="command-palette-results"></div>
+            <div class="command-palette-footer">
+                <span class="command-palette-footer-item"><kbd>↑</kbd> <kbd>↓</kbd> to navigate</span>
+                <span class="command-palette-footer-item"><kbd>enter</kbd> to select</span>
+                <span class="command-palette-footer-item"><kbd>esc</kbd> to close</span>
+            </div>
+        </div>
+    </div>
+
+
+    <script type="text/javascript">
+    document.addEventListener('DOMContentLoaded', function() {
+        // Add copy button to each code block container
+        const codeBlocks = document.querySelectorAll('.code-block-container pre');
+        codeBlocks.forEach(function(codeBlock, index) {
+            // Create button element
+            const button = document.createElement('button');
+            button.className = 'copy-button';
+            button.textContent = 'Copy';
+            button.setAttribute('aria-label', 'Copy code to clipboard');
+            button.setAttribute('data-copy-state', 'copy');
+            
+            // Get the code block container (parent of the pre)
+            const container = codeBlock.parentNode;
+            
+            // Add the button to the container
+            container.appendChild(button);
+            
+            // Set up click event
+            button.addEventListener('click', function() {
+                // Create a textarea element to copy from
+                const textarea = document.createElement('textarea');
+                // Get the text content from the pre element (the actual code)
+                textarea.value = codeBlock.textContent;
+                document.body.appendChild(textarea);
+                textarea.select();
+                
+                try {
+                    // Execute copy command
+                    document.execCommand('copy');
+                    // Update button state
+                    button.textContent = 'Copied!';
+                    button.classList.add('copied');
+                    
+                    // Reset button state after 2 seconds
+                    setTimeout(function() {
+                        button.textContent = 'Copy';
+                        button.classList.remove('copied');
+                    }, 2000);
+                } catch (err) {
+                    console.error('Copy failed:', err);
+                    button.textContent = 'Error!';
+                }
+                
+                // Clean up
+                document.body.removeChild(textarea);
+            });
+        });
+    });
+    </script>
+        </body>
+</html>
