@@ -20,7 +20,6 @@ This repository contains the simulation code and analysis for studying the dynam
 │   ├── initial-condition-test.ipynb  Jupyter notebook for initial condition tests
 │   ├── Makefile                Makefile for compiling/running cases
 │   ├── runMake.sh              Helper script for running make
-│   └── *.dat, *.png            Simulation output data and figures
 ├── src-local/                  Custom header files extending Basilisk functionality
 │   └── two-phaseVP-HB.h        Herschel-Bulkley two-phase flow model
 ├── postProcess/                Project-specific post-processing tools

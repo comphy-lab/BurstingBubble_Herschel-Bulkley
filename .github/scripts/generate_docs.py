@@ -203,31 +203,32 @@ def validate_config() -> bool:
 
 def find_source_files(root_dir: Path, source_dirs: List[str]) -> List[Path]:
     """
-    Recursively finds source files of supported types in specified directories.
-    
-    Searches each directory in `source_dirs` (relative to `root_dir`) for files with
-    extensions `.c`, `.h`, `.py`, `.sh`, and `.ipynb`, including all subdirectories.
-    Also includes `.sh` files located directly in the `root_dir`.
-    
-    Returns:
-        List of Path objects representing all discovered source files.
+    Efficiently finds source files of supported types in specified directories.
+    Skips .dat files. Treats Makefile as a source file.
     """
-    files = []
-    # Search in source directories
+    valid_exts = {'.c', '.h', '.py', '.sh', '.ipynb'}
+    valid_names = {'Makefile'}
+    files = set()
+
     for dir_name in source_dirs:
         src_path = root_dir / dir_name
         if src_path.is_dir():
-            files.extend(src_path.rglob('*.c'))
-            files.extend(src_path.rglob('*.h'))
-            files.extend(src_path.rglob('*.py'))
-            files.extend(src_path.rglob('*.sh'))
-            files.extend(src_path.rglob('*.ipynb'))
-    
-    # Also search for .sh files directly in the root directory
-    for sh_file in root_dir.glob('*.sh'):
-        files.append(sh_file)
-        
-    return files
+            for f in src_path.rglob('*'):
+                if f.is_file():
+                    if f.name in valid_names:
+                        files.add(f)
+                    elif f.suffix in valid_exts and not f.name.endswith('.dat'):
+                        files.add(f)
+
+    # Also search for .sh files and Makefiles directly in the root directory
+    for f in root_dir.iterdir():
+        if f.is_file():
+            if f.name in valid_names:
+                files.add(f)
+            elif f.suffix in valid_exts and not f.name.endswith('.dat'):
+                files.add(f)
+
+    return sorted(files)
 
 
 def process_markdown_file(file_path: Path) -> str:
@@ -633,8 +634,10 @@ def prepare_pandoc_input(file_path: Path, literate_c_script: Path) -> str:
     Prepares source file content for Pandoc conversion based on file type.
     
     Selects the appropriate processing function for Markdown, Python, shell, Jupyter notebook, or C/C++ files, returning the content as a string suitable for Pandoc conversion.
+    Treats Makefile as a shell script.
     """
     file_suffix = file_path.suffix.lower()
+    file_name = file_path.name
     
     if file_suffix == '.md':
         return process_markdown_file(file_path)
@@ -644,6 +647,8 @@ def prepare_pandoc_input(file_path: Path, literate_c_script: Path) -> str:
         return process_shell_file(file_path)
     elif file_suffix == '.ipynb':
         return process_jupyter_notebook(file_path)
+    elif file_name == 'Makefile':
+        return process_shell_file(file_path)
     else:  # C/C++ files
         return process_c_file(file_path, literate_c_script)
 

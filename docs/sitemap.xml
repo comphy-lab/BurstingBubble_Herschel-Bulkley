@@ -6,26 +6,6 @@
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://test.comphy-lab.org/src-local/two-phaseVP-HB.h.html</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://test.comphy-lab.org/simulationCases/burstingBubbleHB.c.html</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://test.comphy-lab.org/simulationCases/runMake.sh.html</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://test.comphy-lab.org/simulationCases/initial-condition-test.ipynb.html</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
     <loc>https://test.comphy-lab.org/postProcess/getData.c.html</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
@@ -44,5 +24,30 @@
     <loc>https://test.comphy-lab.org/reset_install_requirements.sh.html</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://test.comphy-lab.org/simulationCases/Makefile.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://test.comphy-lab.org/simulationCases/burstingBubbleHB.c.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://test.comphy-lab.org/simulationCases/initial-condition-test.ipynb.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://test.comphy-lab.org/simulationCases/runMake.sh.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://test.comphy-lab.org/src-local/two-phaseVP-HB.h.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
   </url>
 </urlset>
