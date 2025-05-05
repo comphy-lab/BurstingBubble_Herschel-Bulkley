@@ -21,6 +21,7 @@ install_basilisk() {
         echo "Using Linux"
         ln -s config.gcc config
     fi
+    make -k
     make
 }
 
