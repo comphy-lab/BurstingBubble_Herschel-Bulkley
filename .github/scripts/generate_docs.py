@@ -685,9 +685,10 @@ def run_pandoc(pandoc_input: str, output_html_path: Path, template_path: Path,
     
     pandoc_cmd = [
         'pandoc',
-        '-f', 'markdown+smart+raw_html',  # Use markdown input with smart typography extension and raw HTML
+        '-f', 'markdown+smart+raw_html+tex_math_dollars',  # Add tex_math_dollars for math support
         '-t', 'html5',
         '--standalone',     # Create full HTML doc
+        '--mathjax',        # Enable MathJax for LaTeX math rendering
         '--template', str(template_path),
         '-V', f'base={base_url}',
         '-V', f'wikititle={wiki_title}',
