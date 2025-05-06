@@ -1,5 +1,6 @@
 # Herschel-Bulkley Worthington Jets & Droplets Produced by Bursting Bubbles
 
+[![Website Status](https://img.shields.io/website?url=https%3A%2F%2Fcomphy-lab.github.io%2FBurstingBubble_Herschel-Bulkley%2F&style=flat-square&logo=github&label=Website)](https://comphy-lab.github.io/BurstingBubble_Herschel-Bulkley/)
 [![Documentation](https://img.shields.io/badge/Documentation-Link-purple?style=flat&logo=obsidian)](https://publish.obsidian.md/comphy-lab/Herschel%E2%80%93Bulkley+formulation)
 [![Demo](https://img.shields.io/badge/Demo-YouTube-red?style=flat&logo=youtube)](https://youtu.be/NmvCVsiEZIA)
 [![License](https://img.shields.io/github/license/comphy-lab/BurstingBubble_Herschel-Bulkley?style=flat)](LICENSE)
