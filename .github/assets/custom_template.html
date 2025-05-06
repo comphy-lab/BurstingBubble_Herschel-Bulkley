@@ -1,132 +1,144 @@
 <!DOCTYPE html>
 <html lang="en" class="no-js">
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="base-url" content="..">
-    <title>$if(pagetitle)$$pagetitle$$endif$$if(wikititle)$ | $wikititle$$endif$</title>
-    
-    <!-- Critical CSS for fastest paint -->
-    <style>
-        .s-intro__title {
-            visibility: visible;
-            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-        }
-        .s-header {
-            visibility: visible;
-        }
-    </style>
+  <script>
+    (function() {
+      const saved = localStorage.getItem('theme');
+      const theme = saved
+        ? saved
+        : window.matchMedia('(prefers-color-scheme: dark)').matches
+          ? 'dark'
+          : 'light';
+      document.documentElement.setAttribute('data-theme', theme);
+    })();
+  </script>
 
-    <!-- Preload critical resources -->
-    <link rel="preload" href="$asset_path_prefix$/assets/js/main.js" as="script">
-    <link rel="preload" href="$asset_path_prefix$/assets/css/fontello/css/fontello.css" as="style">
-    <link rel="preload" href="$asset_path_prefix$/assets/css/academicons-1.7.0/css/academicons.min.css" as="style">
-    
-    <!-- Base stylesheet with proper path resolution for local deployment -->
-    <link rel="stylesheet" href="$asset_path_prefix$/assets/css/styles.css">
-    <link rel="stylesheet" href="$asset_path_prefix$/assets/css/custom_styles.css">
-    <link rel="stylesheet" href="$asset_path_prefix$/assets/css/fontello/css/fontello.css">
-    <link rel="stylesheet" href="$asset_path_prefix$/assets/css/academicons-1.7.0/css/academicons.min.css">
-    <link rel="stylesheet" href="$asset_path_prefix$/assets/css/command-palette.css">
-    <!-- Font Awesome for icons on all documentation pages -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="base-url" content="..">
+  <title>$if(pagetitle)$$pagetitle$$endif$$if(wikititle)$ | $wikititle$$endif$</title>
+  
+  <!-- Critical CSS for fastest paint -->
+  <style>
+      .s-intro__title {
+          visibility: visible;
+          font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      }
+      .s-header {
+          visibility: visible;
+      }
+  </style>
 
-    <!-- Favicon -->
-    <link rel="apple-touch-icon" sizes="180x180" href="$asset_path_prefix$/assets/favicon/apple-touch-icon.png">
-    <link rel="apple-touch-icon-precomposed" sizes="180x180" href="$asset_path_prefix$/assets/favicon/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="96x96" href="$asset_path_prefix$/assets/favicon/favicon-96x96.png">
-    <link rel="icon" type="image/svg+xml" href="$asset_path_prefix$/assets/favicon/favicon.svg">
-    <link rel="manifest" href="$asset_path_prefix$/assets/favicon/site.webmanifest">
-    <link rel="shortcut icon" href="$asset_path_prefix$/assets/favicon/favicon.ico">
-    <link rel="icon" href="$asset_path_prefix$/assets/favicon/favicon.ico">
-    <meta name="msapplication-TileColor" content="#da532c">
-    <meta name="theme-color" content="#ffffff">
-    <meta name="apple-mobile-web-app-title" content="CoMPhy Lab">
-    
-    <!-- SEO Meta Tags -->
-    <meta name="description" content="$if(description)$$description$$else$Computational fluid dynamics simulations using Basilisk C framework.$endif$">
-    <meta name="author" content="CoMPhy Lab">
-    <meta name="robots" content="index, follow">
-    <meta name="keywords" content="$if(keywords)$$keywords$$else$fluid dynamics, CFD, Basilisk, multiphase flow, computational physics$endif$">
+  <!-- Preload critical resources -->
+  <link rel="preload" href="$asset_path_prefix$/assets/js/main.js" as="script">
+  <link rel="preload" href="$asset_path_prefix$/assets/css/fontello/css/fontello.css" as="style">
+  <link rel="preload" href="$asset_path_prefix$/assets/css/academicons-1.7.0/css/academicons.min.css" as="style">
+  
+  <!-- Base stylesheet with proper path resolution for local deployment -->
+  <link rel="stylesheet" href="$asset_path_prefix$/assets/css/styles.css">
+  <link rel="stylesheet" href="$asset_path_prefix$/assets/css/custom_styles.css">
+  <link rel="stylesheet" href="$asset_path_prefix$/assets/css/fontello/css/fontello.css">
+  <link rel="stylesheet" href="$asset_path_prefix$/assets/css/academicons-1.7.0/css/academicons.min.css">
+  <link rel="stylesheet" href="$asset_path_prefix$/assets/css/command-palette.css">
+  <!-- Font Awesome for icons on all documentation pages -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
-    <!-- Font dependencies with font-display: swap -->
-    <style>
-        @font-face {
-            font-display: swap;
-            font-family: 'System Font';
-            src: local('system-ui');
-        }
-    </style>
-    <link rel="stylesheet" href="$asset_path_prefix$/assets/css/fontello/css/fontello.css" media="print" onload="this.media='all'">
-    <link rel="stylesheet" href="$asset_path_prefix$/assets/css/academicons-1.7.0/css/academicons.min.css" media="print" onload="this.media='all'">
-    <noscript>
-        <link rel="stylesheet" href="$asset_path_prefix$/assets/css/fontello/css/fontello.css">
-        <link rel="stylesheet" href="$asset_path_prefix$/assets/css/academicons-1.7.0/css/academicons.min.css">
-    </noscript>
+  <!-- Favicon -->
+  <link rel="apple-touch-icon" sizes="180x180" href="$asset_path_prefix$/assets/favicon/apple-touch-icon.png">
+  <link rel="apple-touch-icon-precomposed" sizes="180x180" href="$asset_path_prefix$/assets/favicon/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="96x96" href="$asset_path_prefix$/assets/favicon/favicon-96x96.png">
+  <link rel="icon" type="image/svg+xml" href="$asset_path_prefix$/assets/favicon/favicon.svg">
+  <link rel="manifest" href="$asset_path_prefix$/assets/favicon/site.webmanifest">
+  <link rel="shortcut icon" href="$asset_path_prefix$/assets/favicon/favicon.ico">
+  <link rel="icon" href="$asset_path_prefix$/assets/favicon/favicon.ico">
+  <meta name="msapplication-TileColor" content="#da532c">
+  <meta name="theme-color" content="#ffffff">
+  <meta name="apple-mobile-web-app-title" content="CoMPhy Lab">
+  
+  <!-- SEO Meta Tags -->
+  <meta name="description" content="$if(description)$$description$$else$Computational fluid dynamics simulations using Basilisk C framework.$endif$">
+  <meta name="author" content="CoMPhy Lab">
+  <meta name="robots" content="index, follow">
+  <meta name="keywords" content="$if(keywords)$$keywords$$else$fluid dynamics, CFD, Basilisk, multiphase flow, computational physics$endif$">
 
-    <!-- Site styles -->
-    <link rel="stylesheet" href="$asset_path_prefix$/assets/css/vendor.css">
-    <link rel="stylesheet" href="$asset_path_prefix$/assets/css/styles.css">
-    <link rel="stylesheet" href="$asset_path_prefix$/assets/css/custom_styles.css">
-    <link rel="stylesheet" href="$asset_path_prefix$/assets/css/command-palette.css" media="print" onload="this.media='all'">
-    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" id="MathJax-script"></script>   
-    <!-- Fuse.js for search functionality -->
-    <script defer src="https://cdn.jsdelivr.net/npm/fuse.js@6.6.2/dist/fuse.min.js"></script>
-    
-    <!-- jQuery and UI -->
-    <script src="$asset_path_prefix$/assets/js/jquery.min.js"></script>
-    <script src="$asset_path_prefix$/assets/js/jquery-ui.packed.js"></script>
-    <script src="$asset_path_prefix$/assets/js/plots.js"></script>
-    
-    <!-- Command palette -->
-    <script defer src="$asset_path_prefix$/assets/js/command-palette.js"></script>
-    <script defer src="$asset_path_prefix$/assets/js/command-data.js"></script>
-    <script defer src="$asset_path_prefix$/assets/js/main.js"></script>
-    <script defer src="$asset_path_prefix$/assets/js/theme-toggle.js"></script>
+  <!-- Font dependencies with font-display: swap -->
+  <style>
+      @font-face {
+          font-display: swap;
+          font-family: 'System Font';
+          src: local('system-ui');
+      }
+  </style>
+  <link rel="stylesheet" href="$asset_path_prefix$/assets/css/fontello/css/fontello.css" media="print" onload="this.media='all'">
+  <link rel="stylesheet" href="$asset_path_prefix$/assets/css/academicons-1.7.0/css/academicons.min.css" media="print" onload="this.media='all'">
+  <noscript>
+      <link rel="stylesheet" href="$asset_path_prefix$/assets/css/fontello/css/fontello.css">
+      <link rel="stylesheet" href="$asset_path_prefix$/assets/css/academicons-1.7.0/css/academicons.min.css">
+  </noscript>
 
-    <script>
-        // Load Font Awesome with proper environment detection and fallbacks
-        function loadStylesheet(href) {
-          const link = document.createElement('link');
-          link.rel = 'stylesheet';
-          link.href = href;
-          link.crossOrigin = 'anonymous';
-          link.onerror = (e) => {
-            console.error(`Failed to load stylesheet: ${href}`);
-            console.log('Trying alternative Font Awesome source...');
-          };
-          document.head.appendChild(link);
-          return link;
-        }
+  <!-- Site styles -->
+  <link rel="stylesheet" href="$asset_path_prefix$/assets/css/vendor.css">
+  <link rel="stylesheet" href="$asset_path_prefix$/assets/css/styles.css">
+  <link rel="stylesheet" href="$asset_path_prefix$/assets/css/custom_styles.css">
+  <link rel="stylesheet" href="$asset_path_prefix$/assets/css/command-palette.css" media="print" onload="this.media='all'">
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" id="MathJax-script"></script>   
+  <!-- Fuse.js for search functionality -->
+  <script defer src="https://cdn.jsdelivr.net/npm/fuse.js@6.6.2/dist/fuse.min.js"></script>
+  
+  <!-- jQuery and UI -->
+  <script src="$asset_path_prefix$/assets/js/jquery.min.js"></script>
+  <script src="$asset_path_prefix$/assets/js/jquery-ui.packed.js"></script>
+  <script src="$asset_path_prefix$/assets/js/plots.js"></script>
+  
+  <!-- Command palette -->
+  <script defer src="$asset_path_prefix$/assets/js/command-palette.js"></script>
+  <script defer src="$asset_path_prefix$/assets/js/command-data.js"></script>
+  <script defer src="$asset_path_prefix$/assets/js/main.js"></script>
+  <script defer src="$asset_path_prefix$/assets/js/theme-toggle.js"></script>
+
+  <script>
+      // Load Font Awesome with proper environment detection and fallbacks
+      function loadStylesheet(href) {
+        const link = document.createElement('link');
+        link.rel = 'stylesheet';
+        link.href = href;
+        link.crossOrigin = 'anonymous';
+        link.onerror = (e) => {
+          console.error(`Failed to load stylesheet: ${href}`);
+          console.log('Trying alternative Font Awesome source...');
+        };
+        document.head.appendChild(link);
+        return link;
+      }
+      
+      // Check if we're on localhost
+      if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+        // Use hardcoded version numbers for reliable loading
         
-        // Check if we're on localhost
-        if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
-          // Use hardcoded version numbers for reliable loading
-          
-          // Load Font Awesome using multiple CDNs to maximize reliability for local development
-          loadStylesheet('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css');
-          // Backup CDN if the first one fails
-          loadStylesheet('https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.7.2/css/all.min.css');
-          // Final local fallback - ensures it will work on any localhost environment
-          loadStylesheet('https://use.fontawesome.com/releases/v6.7.2/css/all.css');
-        } else {
-          // Use Kit for production with defer
-          var script = document.createElement('script');
-          script.src = 'https://kit.fontawesome.com/b1cfd9ca75.js';
-          script.crossOrigin = 'anonymous';
-          script.defer = true;
-          document.head.appendChild(script);
-        }
-      </script>
-
-    <script>
-        document.documentElement.classList.remove('no-js');
-        document.documentElement.classList.add('js');
+        // Load Font Awesome using multiple CDNs to maximize reliability for local development
+        loadStylesheet('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css');
+        // Backup CDN if the first one fails
+        loadStylesheet('https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.7.2/css/all.min.css');
+        // Final local fallback - ensures it will work on any localhost environment
+        loadStylesheet('https://use.fontawesome.com/releases/v6.7.2/css/all.css');
+      } else {
+        // Use Kit for production with defer
+        var script = document.createElement('script');
+        script.src = 'https://kit.fontawesome.com/b1cfd9ca75.js';
+        script.crossOrigin = 'anonymous';
+        script.defer = true;
+        document.head.appendChild(script);
+      }
     </script>
 
-    $if(mathjax)$
-    $mathjax$
-    $endif$
+  <script>
+      document.documentElement.classList.remove('no-js');
+      document.documentElement.classList.add('js');
+  </script>
+
+  $if(mathjax)$
+  $mathjax$
+  $endif$
 </head>
 <body id="top">
 
