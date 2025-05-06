@@ -4,17 +4,46 @@
   <!-- Eliminate FOUC (Flash of Unstyled Content) and FOUT (Flash of Incorrect Theme) -->
   <script>
     (function() {
-      // Apply the theme as quickly as possible to avoid flash
-      const saved = localStorage.getItem('theme');
-      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-      const theme = saved ? saved : (prefersDark ? 'dark' : 'light');
-      document.documentElement.setAttribute('data-theme', theme);
-      // Add theme class for CSS targeting
-      document.documentElement.classList.add(theme + '-theme');
-      // Mark when theme is set for CSS transitions
+  try {
+    // Apply the theme as quickly as possible to avoid flash
+    let saved;
+    try {
+      saved = localStorage.getItem('theme');
+    } catch (storageError) {
+      // Handle localStorage access errors (private browsing, cookies disabled)
+      console.warn('Unable to access localStorage:', storageError);
+    }
+<a id="" href="#"></a>
+    let prefersDark = false;
+    try {
+      prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+    } catch (mediaError) {
+      // Handle matchMedia access errors (unsupported browsers)
+      console.warn('Unable to check media query:', mediaError);
+    }
+<a id="" href="#"></a>
+    const theme = saved ? saved : (prefersDark ? 'dark' : 'light');
+    document.documentElement.setAttribute('data-theme', theme);
+    // Add theme class for CSS targeting
+    document.documentElement.classList.add(theme + '-theme');
+    // Mark when theme is set for CSS transitions
+    document.documentElement.classList.add('theme-set');
+  } catch (error) {
+    // Fallback for any other unexpected errors
+    console.warn('Theme initialization failed:', error);
+    // Apply default theme as fallback
+    try {
+      document.documentElement.setAttribute('data-theme', 'light');
+      document.documentElement.classList.add('light-theme');
       document.documentElement.classList.add('theme-set');
-    })();
+    } catch (fallbackError) {
+      // Silent catch for extreme cases
+      console.error('Critical theme fallback failed:', fallbackError);
+    }
+  }
+})();
   </script>
+<a id="" href="#"></a>
 <a id="" href="#"></a>
   <!-- No-JS fallback for theme and critical theming styles -->
   <style>
@@ -168,39 +197,29 @@
       }
   </style>
 <a id="" href="#"></a>
+  <!-- Critical Meta Tags -->
+  <meta name="description" content="This program extracts and processes data from fluid dynamics simulation snapshots. It calculates key fluid mechanics quantities like strain rate tensor invar...">
+  <meta name="author" content="CoMPhy Lab">
+  <meta name="robots" content="index, follow">
+  <meta name="keywords" content="getdata, output.h, utils.h">
+  <meta name="msapplication-TileColor" content="#da532c">
+  <meta name="theme-color" content="#ffffff">
+  <meta name="apple-mobile-web-app-title" content="CoMPhy Lab">
+<a id="" href="#"></a>
   <!-- Preload critical resources -->
   <link rel="preload" href="../assets/js/main.js" as="script">
   <link rel="preload" href="../assets/css/fontello/css/fontello.css" as="style">
   <link rel="preload" href="../assets/css/academicons-1.7.0/css/academicons.min.css" as="style">
 <a id="" href="#"></a>
-  <!-- Base stylesheet with proper path resolution for local deployment -->
+  <!-- Base stylesheets -->
   <link rel="stylesheet" href="../assets/css/styles.css">
   <link rel="stylesheet" href="../assets/css/custom_styles.css">
+  <link rel="stylesheet" href="../assets/css/command-palette.css">
   <link rel="stylesheet" href="../assets/css/fontello/css/fontello.css">
   <link rel="stylesheet" href="../assets/css/academicons-1.7.0/css/academicons.min.css">
-  <link rel="stylesheet" href="../assets/css/command-palette.css">
-  <!-- Font Awesome for icons on all documentation pages -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
 <a id="" href="#"></a>
-  <!-- Favicon -->
-  <link rel="apple-touch-icon" sizes="180x180" href="../assets/favicon/apple-touch-icon.png">
-  <link rel="apple-touch-icon-precomposed" sizes="180x180" href="../assets/favicon/apple-touch-icon.png">
-  <link rel="icon" type="image/png" sizes="96x96" href="../assets/favicon/favicon-96x96.png">
-  <link rel="icon" type="image/svg+xml" href="../assets/favicon/favicon.svg">
-  <link rel="manifest" href="../assets/favicon/site.webmanifest">
-  <link rel="shortcut icon" href="../assets/favicon/favicon.ico">
-  <link rel="icon" href="../assets/favicon/favicon.ico">
-  <meta name="msapplication-TileColor" content="#da532c">
-  <meta name="theme-color" content="#ffffff">
-  <meta name="apple-mobile-web-app-title" content="CoMPhy Lab">
-<a id="" href="#"></a>
-  <!-- SEO Meta Tags -->
-  <meta name="description" content="Computational fluid dynamics simulations using Basilisk C framework.">
-  <meta name="author" content="CoMPhy Lab">
-  <meta name="robots" content="index, follow">
-  <meta name="keywords" content="fluid dynamics, CFD, Basilisk, multiphase flow, computational physics">
-<a id="" href="#"></a>
-  <!-- Font dependencies with font-display: swap -->
+  <!-- Font optimization -->
   <style>
       @font-face {
           font-display: swap;
@@ -208,32 +227,24 @@
           src: local('system-ui');
       }
   </style>
-  <link rel="stylesheet" href="../assets/css/fontello/css/fontello.css" media="print" onload="this.media='all'">
-  <link rel="stylesheet" href="../assets/css/academicons-1.7.0/css/academicons.min.css" media="print" onload="this.media='all'">
-  <noscript>
-      <link rel="stylesheet" href="../assets/css/fontello/css/fontello.css">
-      <link rel="stylesheet" href="../assets/css/academicons-1.7.0/css/academicons.min.css">
-  </noscript>
 <a id="" href="#"></a>
-  <!-- Site styles -->
-  <link rel="stylesheet" href="../assets/css/vendor.css">
-  <link rel="stylesheet" href="../assets/css/styles.css">
-  <link rel="stylesheet" href="../assets/css/custom_styles.css">
-  <link rel="stylesheet" href="../assets/css/command-palette.css" media="print" onload="this.media='all'">
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" id="MathJax-script"></script>   
-  <!-- Fuse.js for search functionality -->
-  <script defer src="https://cdn.jsdelivr.net/npm/fuse.js@6.6.2/dist/fuse.min.js"></script>
+  <!-- Favicon -->
+  <link rel="apple-touch-icon" sizes="180x180" href="../assets/favicon/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="96x96" href="../assets/favicon/favicon-96x96.png">
+  <link rel="icon" type="image/svg+xml" href="../assets/favicon/favicon.svg">
+  <link rel="shortcut icon" href="../assets/favicon/favicon.ico">
+  <link rel="manifest" href="../assets/favicon/site.webmanifest">
 <a id="" href="#"></a>
-  <!-- jQuery and UI -->
+  <!-- Scripts with proper loading attributes -->
   <script src="../assets/js/jquery.min.js"></script>
   <script src="../assets/js/jquery-ui.packed.js"></script>
   <script src="../assets/js/plots.js"></script>
-<a id="" href="#"></a>
-  <!-- Command palette -->
+  <script defer src="https://cdn.jsdelivr.net/npm/fuse.js@6.6.2/dist/fuse.min.js"></script>
   <script defer src="../assets/js/command-palette.js"></script>
   <script defer src="../assets/js/command-data.js"></script>
   <script defer src="../assets/js/main.js"></script>
   <script defer src="../assets/js/theme-toggle.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" id="MathJax-script"></script>
 <a id="" href="#"></a>
   <!-- Optimize page load performance -->
   <script>
@@ -277,7 +288,7 @@
         link.href = href;
         link.crossOrigin = 'anonymous';
         link.onerror = (e) => {
-          console.error(`Failed to load stylesheet: `);
+          console.error(`Failed to load stylesheet: `, e);
           console.log('Trying alternative Font Awesome source...');
         };
         document.head.appendChild(link);
@@ -316,9 +327,7 @@
           }, 100); // Short delay to ensure DOM is ready
       });
   </script>
-<a id="" href="#"></a>
-    true
-  </head>
+</head>
 <body id="top">
 <script>window.repoName = "BurstingBubble_Herschel-Bulkley";</script>
 
@@ -370,10 +379,6 @@
                                 <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
                             </svg>
                         </div>
-                        <!-- No-JS theme indicator -->
-                        <div class="theme-indicator no-js-only">
-                            <span class="theme-indicator-text">Theme: System</span>
-                        </div>
                     </li>
                     <li style="background: none;"><a href="https://scholar.google.com/citations?user=tHb_qZoAAAAJ&hl=en" style="background: none; padding: 0;" aria-label="Google Scholar Profile"><i class="ai ai-google-scholar" style="font-size: 1.75em;"></i></a></li>
                     <li style="background: none;"><a href="https://github.com/comphy-lab" style="background: none; padding: 0;" aria-label="GitHub Organization"><i class="fa-brands fa-github" style="font-size: 1.75em"></i></a></li>
@@ -405,6 +410,12 @@
 <a id="" href="#"></a>
                                 <h1 class="page-title">postProcess/getData.c</h1>
 <a id="" href="#"></a>
+<a id="" href="#"></a>
+                                <div class="raw-file-button-container">
+                    <a href="https://github.com/comphy-lab/BurstingBubble_Herschel-Bulkley/raw/main/postProcess/getData.c" class="raw-file-button" target="_blank">
+                        <i class="fa-brands fa-github"></i> See raw file
+                    </a>
+                </div>
 <a id="" href="#"></a>
                 <h1 id="fluid-simulation-data-extraction">Fluid
                 Simulation Data Extraction</h1>
@@ -630,55 +641,74 @@
     </div>
 <a id="" href="#"></a>
 
-    <script type="text/javascript">
-    document.addEventListener('DOMContentLoaded', function() {
-        // Add copy button to each code block container
-        const codeBlocks = document.querySelectorAll('.code-block-container pre');
-        codeBlocks.forEach(function(codeBlock, index) {
-            // Create button element
-            const button = document.createElement('button');
-            button.className = 'copy-button';
-            button.textContent = 'Copy';
-            button.setAttribute('aria-label', 'Copy code to clipboard');
-            button.setAttribute('data-copy-state', 'copy');
+<script type="text/javascript">
+document.addEventListener('DOMContentLoaded', function() {
+    // Add copy button to each code block container
+    const codeBlocks = document.querySelectorAll('.code-block-container pre');
+    codeBlocks.forEach(function(codeBlock, index) {
+        // Create button element
+        const button = document.createElement('button');
+        button.className = 'copy-button';
+        button.textContent = 'Copy';
+        button.setAttribute('aria-label', 'Copy code to clipboard');
+        button.setAttribute('data-copy-state', 'copy');
+        
+        // Get the code block container (parent of the pre)
+        const container = codeBlock.parentNode;
+        
+        // Add the button to the container
+        container.appendChild(button);
+        
+        // Set up click event
+        button.addEventListener('click', async function() {
+            const codeText = codeBlock.textContent;
             
-            // Get the code block container (parent of the pre)
-            const container = codeBlock.parentNode;
-            
-            // Add the button to the container
-            container.appendChild(button);
-            
-            // Set up click event
-            button.addEventListener('click', function() {
-                // Create a textarea element to copy from
-                const textarea = document.createElement('textarea');
-                // Get the text content from the pre element (the actual code)
-                textarea.value = codeBlock.textContent;
-                document.body.appendChild(textarea);
-                textarea.select();
-                
-                try {
-                    // Execute copy command
-                    document.execCommand('copy');
-                    // Update button state
-                    button.textContent = 'Copied!';
-                    button.classList.add('copied');
+            try {
+                // Try to use the modern clipboard API first
+                if (navigator.clipboard && navigator.clipboard.writeText) {
+                    await navigator.clipboard.writeText(codeText);
+                    updateButtonState(button, 'success');
+                } else {
+                    // Fall back to the deprecated execCommand method
+                    const textarea = document.createElement('textarea');
+                    textarea.value = codeText;
+                    textarea.style.position = 'fixed';  // Prevent scrolling to the bottom
+                    document.body.appendChild(textarea);
+                    textarea.select();
                     
-                    // Reset button state after 2 seconds
-                    setTimeout(function() {
-                        button.textContent = 'Copy';
-                        button.classList.remove('copied');
-                    }, 2000);
-                } catch (err) {
-                    console.error('Copy failed:', err);
-                    button.textContent = 'Error!';
+                    const successful = document.execCommand('copy');
+                    document.body.removeChild(textarea);
+                    
+                    if (successful) {
+                        updateButtonState(button, 'success');
+                    } else {
+                        updateButtonState(button, 'error');
+                    }
                 }
-                
-                // Clean up
-                document.body.removeChild(textarea);
-            });
+            } catch (err) {
+                console.error('Copy failed:', err);
+                updateButtonState(button, 'error');
+            }
         });
     });
-    </script>
+    
+    // Function to update button state
+    function updateButtonState(button, state) {
+        if (state === 'success') {
+            button.textContent = 'Copied!';
+            button.classList.add('copied');
+        } else if (state === 'error') {
+            button.textContent = 'Error!';
+            button.classList.add('error');
+        }
+        
+        // Reset button state after 2 seconds
+        setTimeout(function() {
+            button.textContent = 'Copy';
+            button.classList.remove('copied', 'error');
+        }, 2000);
+    }
+});
+</script>
         </body>
 </html>
