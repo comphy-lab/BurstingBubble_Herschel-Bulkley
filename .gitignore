@@ -11,20 +11,14 @@
 **/*.tst
 **/Video
 **/*.mp4
-**/*.json
 **/*.bv
 **/*.project_config
 **/_darcs
 
 # Custom executables (add your specific executable names here)
-**/filamentsVE
-**/filamentsNewt
-**/filament_initialCondition
-**/filament_initialCondition_3D
 **/getFacets
 **/getData-elastic-scalar
 **/getData
-**/pinchOff
 **/getview3D
 **/burstingBubbleHB
 **/Simulations-failing
@@ -101,7 +95,3 @@ deps/
 .Trashes
 ehthumbs.db
 Thumbs.db
-
-**/.cursorrules
-**/.windsurfrules
-**/CLAUDE.md
