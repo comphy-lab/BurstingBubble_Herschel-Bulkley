@@ -13,7 +13,6 @@
 **/*.mp4
 **/*.json
 **/*.bv
-**/*.png
 **/*.project_config
 **/_darcs
 
