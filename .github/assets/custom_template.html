@@ -1,17 +1,139 @@
 <!DOCTYPE html>
 <html lang="en" class="no-js">
 <head>
+  <!-- Eliminate FOUC (Flash of Unstyled Content) and FOUT (Flash of Incorrect Theme) -->
   <script>
     (function() {
+      // Apply the theme as quickly as possible to avoid flash
       const saved = localStorage.getItem('theme');
-      const theme = saved
-        ? saved
-        : window.matchMedia('(prefers-color-scheme: dark)').matches
-          ? 'dark'
-          : 'light';
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      const theme = saved ? saved : (prefersDark ? 'dark' : 'light');
       document.documentElement.setAttribute('data-theme', theme);
+      // Add theme class for CSS targeting
+      document.documentElement.classList.add(theme + '-theme');
+      // Mark when theme is set for CSS transitions
+      document.documentElement.classList.add('theme-set');
     })();
   </script>
+
+  <!-- No-JS fallback for theme and critical theming styles -->
+  <style>
+    /* Default light theme variables */
+    :root {
+      /* Base colors */
+      --color-background: #fff;
+      --color-text: #333;
+      --color-primary: #0066cc;
+      --color-secondary: #036;
+      --color-accent: #0099ff;
+      
+      /* UI elements */
+      --color-header-bg: #f5f5f5;
+      --color-footer-bg: #2d2e33;
+      --color-border: #e0e0e0;
+      --color-input-bg: #f9f9f9;
+      
+      /* Component colors */
+      --color-preloader-bg: #ffffff;
+      --color-loader: #0066cc;
+      --color-card-bg: #ffffff;
+      --color-code-bg: #f5f5f5;
+    }
+    
+    /* Dark theme variables applied via media query when JS is disabled */
+    @media (prefers-color-scheme: dark) {
+      :root:not(.theme-set) {
+        /* Base colors - dark mode */
+        --color-background: #1a1a1a;
+        --color-text: #f5f5f5;
+        --color-primary: #4d9fff;
+        --color-secondary: #88ccff;
+        --color-accent: #00bfff;
+        
+        /* UI elements - dark mode */
+        --color-header-bg: #121212;
+        --color-footer-bg: #121212;
+        --color-border: #333;
+        --color-input-bg: #2d2d2d;
+        
+        /* Component colors - dark mode */
+        --color-preloader-bg: #1a1a1a;
+        --color-loader: #4d9fff;
+        --color-card-bg: #222;
+        --color-code-bg: #2d2d2d;
+      }
+    }
+    
+    /* When JS sets the theme explicitly via data attribute */
+    [data-theme="dark"] {
+      /* Base colors - dark mode */
+      --color-background: #1a1a1a;
+      --color-text: #f5f5f5;
+      --color-primary: #4d9fff;
+      --color-secondary: #88ccff;
+      --color-accent: #00bfff;
+      
+      /* UI elements - dark mode */
+      --color-header-bg: #121212;
+      --color-footer-bg: #121212;
+      --color-border: #333;
+      --color-input-bg: #2d2d2d;
+      
+      /* Component colors - dark mode */
+      --color-preloader-bg: #1a1a1a;
+      --color-loader: #4d9fff;
+      --color-card-bg: #222;
+      --color-code-bg: #2d2d2d;
+    }
+    
+    /* Prevent transition flashes during initial load */
+    html:not(.transitions-enabled) * {
+      transition: none !important;
+    }
+    
+    /* Apply theme to preloader and early elements */
+    #preloader {
+      background-color: var(--color-preloader-bg);
+      color: var(--color-text);
+    }
+    
+    #loader {
+      border-color: var(--color-loader);
+      border-top-color: transparent;
+    }
+    
+    /* Noscript warning */
+    .noscript-warning {
+      background-color: var(--color-primary);
+      color: white;
+      text-align: center;
+      padding: 10px;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+    }
+    
+    /* Theme indicator for no-JS */
+    .theme-indicator {
+      padding: 5px 10px;
+      border-radius: 4px;
+      background-color: var(--color-input-bg);
+      color: var(--color-text);
+      text-align: center;
+    }
+    
+    /* Hide JS-only elements when no JS */
+    .no-js .js-only {
+      display: none !important;
+    }
+    
+    /* Show no-JS alternatives */
+    .js .no-js-only {
+      display: none !important;
+    }
+  </style>
 
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -26,6 +148,23 @@
       }
       .s-header {
           visibility: visible;
+      }
+      
+      /* Ensure theme toggle properly styled immediately */
+      .theme-toggle {
+          background-color: var(--color-background);
+          color: var(--color-text);
+      }
+      
+      /* Control SVG visibility based on theme */
+      [data-theme="dark"] .theme-toggle-icon.sun,
+      :root:not([data-theme="dark"]) .theme-toggle-icon.moon {
+          display: block;
+      }
+      
+      [data-theme="dark"] .theme-toggle-icon.moon,
+      :root:not([data-theme="dark"]) .theme-toggle-icon.sun {
+          display: none;
       }
   </style>
 
@@ -95,6 +234,40 @@
   <script defer src="$asset_path_prefix$/assets/js/command-data.js"></script>
   <script defer src="$asset_path_prefix$/assets/js/main.js"></script>
   <script defer src="$asset_path_prefix$/assets/js/theme-toggle.js"></script>
+  
+  <!-- Optimize page load performance -->
+  <script>
+    // Preconnect to critical domains
+    const preconnectDomains = [
+      'https://cdnjs.cloudflare.com',
+      'https://cdn.jsdelivr.net'
+    ];
+    
+    preconnectDomains.forEach(domain => {
+      const link = document.createElement('link');
+      link.rel = 'preconnect';
+      link.href = domain;
+      link.crossOrigin = 'anonymous';
+      document.head.appendChild(link);
+      
+      // Also add DNS prefetch as fallback
+      const dnsLink = document.createElement('link');
+      dnsLink.rel = 'dns-prefetch';
+      dnsLink.href = domain;
+      document.head.appendChild(dnsLink);
+    });
+    
+    // Detect when document is fully loaded to remove preloader
+    window.addEventListener('load', function() {
+      const preloader = document.getElementById('preloader');
+      if (preloader) {
+        preloader.style.opacity = '0';
+        setTimeout(() => {
+          preloader.style.display = 'none';
+        }, 300); // Match transition duration
+      }
+    });
+  </script>
 
   <script>
       // Load Font Awesome with proper environment detection and fallbacks
@@ -132,8 +305,16 @@
     </script>
 
   <script>
+      // Mark page as JS-enabled and manage transitions
       document.documentElement.classList.remove('no-js');
       document.documentElement.classList.add('js');
+      
+      // Allow CSS transitions after initial load to prevent transition flashes
+      window.addEventListener('DOMContentLoaded', () => {
+          setTimeout(() => {
+              document.documentElement.classList.add('transitions-enabled');
+          }, 100); // Short delay to ensure DOM is ready
+      });
   </script>
 
   $if(mathjax)$
@@ -142,9 +323,16 @@
 </head>
 <body id="top">
 
+    <!-- Preloader with theme variables applied -->
     <div id="preloader">
         <div id="loader"></div>
     </div>
+
+    <noscript>
+        <div class="noscript-warning">
+            <p>This site works best with JavaScript enabled. Some features may be limited.</p>
+        </div>
+    </noscript>
 
     <div id="page" class="s-pagewrap">
         <header class="s-header">
@@ -165,7 +353,8 @@
                 <a href="#0" class="s-header__nav-close-btn"><span>Close</span></a>
                 <ul class="s-header__nav-list">
                     <li style="background: none;">
-                        <div class="theme-toggle" id="theme-toggle" aria-label="Toggle dark/light theme">
+                        <!-- JS theme toggle -->
+                        <div class="theme-toggle js-only" id="theme-toggle" aria-label="Toggle dark/light theme">
                             <svg class="theme-toggle-icon moon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                 <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
                             </svg>
@@ -180,6 +369,10 @@
                                 <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
                                 <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
                             </svg>
+                        </div>
+                        <!-- No-JS theme indicator -->
+                        <div class="theme-indicator no-js-only">
+                            <span class="theme-indicator-text">Theme: System</span>
                         </div>
                     </li>
                     <li style="background: none;"><a href="https://scholar.google.com/citations?user=tHb_qZoAAAAJ&hl=en" style="background: none; padding: 0;" aria-label="Google Scholar Profile"><i class="ai ai-google-scholar" style="font-size: 1.75em;"></i></a></li>
