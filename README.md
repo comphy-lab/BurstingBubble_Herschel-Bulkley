@@ -8,6 +8,7 @@
 ![GitHub last commit](https://img.shields.io/github/last-commit/comphy-lab/BurstingBubble_Herschel-Bulkley)
 [![GitHub issues](https://img.shields.io/github/issues/comphy-lab/BurstingBubble_Herschel-Bulkley)](https://github.com/comphy-lab/BurstingBubble_Herschel-Bulkley/issues)
 [![DOI](https://zenodo.org/badge/910477928.svg)](https://doi.org/10.5281/zenodo.14585953)
+[![GitHub](https://img.shields.io/badge/GitHub-Repository-blue?style=flat-square&logo=github)](https://github.com/comphy-lab/BurstingBubble_Herschel-Bulkley)
 
 This repository contains the simulation code and analysis for studying the dynamics of Herschel-Bulkley Worthington jets and droplets produced by bursting bubbles. The code uses the Basilisk framework to simulate bubble cavity collapse in non-Newtonian media, examining how power-law index, yield stress, and viscosity affect jet and droplet formation.
 
