@@ -1,9 +1,9 @@
 /**
 # Bursting Bubbles in Herschel-Bulkley Media Simulation
 
-This simulation models the dynamics of bursting bubbles in Herschel-Bulkley 
-media, with particular focus on Worthington jet formation and droplet 
-ejection. The code implements a two-phase flow model with non-Newtonian 
+This simulation models the dynamics of bursting bubbles in Herschel-Bulkley
+media, with particular focus on Worthington jet formation and droplet
+ejection. The code implements a two-phase flow model with non-Newtonian
 rheology using an epsilon-regularisation approach.
 
 ## File Information
@@ -47,17 +47,18 @@ rheology using an epsilon-regularisation approach.
 #include "two-phaseVP-HB.h"
 #include "navier-stokes/conserving.h"
 #include "tension.h"
+#include "reduced.h"
 
 #if !_MPI
 #include "distance.h"
 #endif
 
-#define tsnap (1e-2) // 0.001 only for some cases. 
+#define tsnap (1e-2) // 0.001 only for some cases.
 // Error tolerances
 #define fErr (1e-3)      // Error tolerance in f1 VOF
-#define KErr (1e-6)      // Error tolerance in VoF curvature calculated using 
+#define KErr (1e-6)      // Error tolerance in VoF curvature calculated using
                          // height function method (see adapt event)
-#define VelErr (1e-3)    // Error tolerances in velocity -- Use 1e-2 for low Oh 
+#define VelErr (1e-3)    // Error tolerances in velocity -- Use 1e-2 for low Oh
                          // and 1e-3 to 5e-3 for high Oh/moderate to high J
 #define D2Err (1e-2)     // Error tolerances in conformation inside the liquid
 
@@ -85,29 +86,30 @@ simulation run.
 - Integer status code (0 on successful completion)
 */
 int main(int argc, char const *argv[]) {
-  
+
   L0 = Ldomain;
   origin(-L0/2., 0.);
-  
+
   /**
   ### Parameter Initialization
   Setting default values for simulation parameters. In production runs,
   these values can be passed from the command line.
   */
-  MAXlevel = 10; 
-  n = 0.4; 
+  MAXlevel = 10;
+  n = 0.4;
   OhK = 0.001;
-  J = 2e-1; 
-  Bond = 1e0;
+  J = 2e-1;
+  Bond = 1.1;
+  G.x = -Bond;
   tmax = 2.5e0;
   epsilon = 1e-2;
 
   /**
   ### Command Line Argument Parsing
   To get parameters from the terminal, uncomment the following block.
-  
+
   ```c
-  // First ensure that all the variables were transferred properly from the 
+  // First ensure that all the variables were transferred properly from the
   // terminal or job script.
   if (argc < 7) {
     fprintf(ferr, "Lack of command line arguments. Check! Need %d more "
@@ -137,15 +139,15 @@ int main(int argc, char const *argv[]) {
 
   /**
   ## Physical Properties Configuration
-  
+
   ### Phase Properties
   - `rho1`, `rho2`: Density of liquid and gas phases
   - `mu1`, `mu2`: Dynamic viscosity of liquid and gas phases
-  
+
   ### Dimensionless Numbers
   - `Oh`: Ohnesorge number for liquid phase
   - `Oha`: Ohnesorge number for gas phase (= 2e-2 * Oh)
-  - `J`: Plasto-capillary number 
+  - `J`: Plasto-capillary number
   - `Bond`: Bond number
   */
   rho1 = 1., rho2 = 1e-3;
@@ -202,14 +204,14 @@ event init(t = 0) {
     distance(d, InitialShape);
 
     while (adapt_wavelet((scalar *){f, d}, (double[]){1e-8, 1e-8}, MAXlevel).nf);
-    
+
     // The distance function is defined at the center of each cell, we have
     // to calculate the value of this function at each vertex.
     vertex scalar phi[];
     foreach_vertex() {
       phi[] = -(d[] + d[-1] + d[0,-1] + d[-1,-1])/4.;
     }
-    
+
     // We can now initialize the volume fraction of the domain.
     fractions(phi, f);
   }
@@ -318,7 +320,7 @@ event logWriting(i++) {
       }
     }
     assert(ke < 1e2);
-    
+
     if (ke < 1e-6 && i > 1e1) {
       if (pid() == 0) {
         fprintf(ferr, "Kinetic energy too small now! Stopping!\n");
