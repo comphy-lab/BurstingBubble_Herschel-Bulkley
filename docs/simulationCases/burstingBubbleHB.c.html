@@ -201,7 +201,7 @@
   <meta name="description" content="This simulation models the dynamics of bursting bubbles in Herschel-Bulkley media, with particular focus on Worthington jet formation and droplet ejection. T...">
   <meta name="author" content="CoMPhy Lab">
   <meta name="robots" content="index, follow">
-  <meta name="keywords" content="axi.h, burstingbubblehb, distance.h, method, navier-stokes/centered.h, navier-stokes/conserving.h, tension.h, two-phasevp-hb.h">
+  <meta name="keywords" content="axi.h, burstingbubblehb, distance.h, method, navier-stokes/centered.h, navier-stokes/conserving.h, reduced.h, tension.h, two-phasevp-hb.h">
   <meta name="msapplication-TileColor" content="#da532c">
   <meta name="theme-color" content="#ffffff">
   <meta name="apple-mobile-web-app-title" content="CoMPhy Lab">
@@ -482,30 +482,31 @@
 <span id="cb3-2"><span class="pp">#include </span><a href="../src-local/two-phaseVP-HB.h.html" title="Link to local documentation for two-phaseVP-HB.h"><span class="im">"two-phaseVP-HB.h"</span></a></span>
 <span id="cb3-3"><span class="pp">#include </span><a href="http://basilisk.fr/src/navier-stokes/conserving.h" title="Link to Basilisk source for navier-stokes/conserving.h"><span class="im">"navier-stokes/conserving.h"</span></a></span>
 <span id="cb3-4"><span class="pp">#include </span><a href="http://basilisk.fr/src/tension.h" title="Link to Basilisk source for tension.h"><span class="im">"tension.h"</span></a></span>
-<span id="cb3-5"></span>
-<span id="cb3-6"><span class="pp">#if !_MPI</span></span>
-<span id="cb3-7"><span class="pp">#include </span><a href="http://basilisk.fr/src/distance.h" title="Link to Basilisk source for distance.h"><span class="im">"distance.h"</span></a></span>
-<span id="cb3-8"><span class="pp">#endif</span></span>
-<span id="cb3-9"></span>
-<span id="cb3-10"><span class="pp">#define tsnap </span><span class="op">(</span><span class="fl">1e-2</span><span class="op">)</span><span class="pp"> </span><span class="co">// 0.001 only for some cases.</span></span>
-<span id="cb3-11"><span class="co">// Error tolerances</span></span>
-<span id="cb3-12"><span class="pp">#define fErr </span><span class="op">(</span><span class="fl">1e-3</span><span class="op">)</span><span class="pp">      </span><span class="co">// Error tolerance in f1 VOF</span></span>
-<span id="cb3-13"><span class="pp">#define KErr </span><span class="op">(</span><span class="fl">1e-6</span><span class="op">)</span><span class="pp">      </span><span class="co">// Error tolerance in VoF curvature calculated using</span></span>
-<span id="cb3-14">                         <span class="co">// height function method (see adapt event)</span></span>
-<span id="cb3-15"><span class="pp">#define VelErr </span><span class="op">(</span><span class="fl">1e-3</span><span class="op">)</span><span class="pp">    </span><span class="co">// Error tolerances in velocity -- Use 1e-2 for low Oh</span></span>
-<span id="cb3-16">                         <span class="co">// and 1e-3 to 5e-3 for high Oh/moderate to high J</span></span>
-<span id="cb3-17"><span class="pp">#define D2Err </span><span class="op">(</span><span class="fl">1e-2</span><span class="op">)</span><span class="pp">     </span><span class="co">// Error tolerances in conformation inside the liquid</span></span>
-<span id="cb3-18"></span>
-<span id="cb3-19"><span class="co">// Domain size</span></span>
-<span id="cb3-20"><span class="pp">#define Ldomain </span><span class="dv">8</span><span class="pp"></span><span class="dv">65</span><span class="pp"></span></span>
-<span id="cb3-21"></span>
-<span id="cb3-22"><span class="co">// Boundary conditions - outflow on the right boundary</span></span>
-<span id="cb3-23">u<span class="op">.</span>n<span class="op">[</span>right<span class="op">]</span> <span class="op">=</span> neumann<span class="op">(</span><span class="fl">0.</span><span class="op">);</span></span>
-<span id="cb3-24">p<span class="op">[</span>right<span class="op">]</span> <span class="op">=</span> dirichlet<span class="op">(</span><span class="fl">0.</span><span class="op">);</span></span>
-<span id="cb3-25"></span>
-<span id="cb3-26"><span class="dt">int</span> MAXlevel<span class="op">;</span></span>
-<span id="cb3-27"><span class="dt">double</span> OhK<span class="op">,</span> Oha<span class="op">,</span> J<span class="op">,</span> Bond<span class="op">,</span> tmax<span class="op">;</span></span>
-<span id="cb3-28"><span class="dt">char</span> nameOut<span class="op">[</span><span class="dv">80</span><span class="op">],</span> dumpFile<span class="op">[</span><span class="dv">80</span><span class="op">],</span> logFile<span class="op">[</span><span class="dv">80</span><span class="op">];</span></span></code></pre></div></div>
+<span id="cb3-5"><span class="pp">#include </span><a href="http://basilisk.fr/src/reduced.h" title="Link to Basilisk source for reduced.h"><span class="im">"reduced.h"</span></a></span>
+<span id="cb3-6"></span>
+<span id="cb3-7"><span class="pp">#if !_MPI</span></span>
+<span id="cb3-8"><span class="pp">#include </span><a href="http://basilisk.fr/src/distance.h" title="Link to Basilisk source for distance.h"><span class="im">"distance.h"</span></a></span>
+<span id="cb3-9"><span class="pp">#endif</span></span>
+<span id="cb3-10"></span>
+<span id="cb3-11"><span class="pp">#define tsnap </span><span class="op">(</span><span class="fl">1e-2</span><span class="op">)</span><span class="pp"> </span><span class="co">// 0.001 only for some cases.</span></span>
+<span id="cb3-12"><span class="co">// Error tolerances</span></span>
+<span id="cb3-13"><span class="pp">#define fErr </span><span class="op">(</span><span class="fl">1e-3</span><span class="op">)</span><span class="pp">      </span><span class="co">// Error tolerance in f1 VOF</span></span>
+<span id="cb3-14"><span class="pp">#define KErr </span><span class="op">(</span><span class="fl">1e-6</span><span class="op">)</span><span class="pp">      </span><span class="co">// Error tolerance in VoF curvature calculated using</span></span>
+<span id="cb3-15">                         <span class="co">// height function method (see adapt event)</span></span>
+<span id="cb3-16"><span class="pp">#define VelErr </span><span class="op">(</span><span class="fl">1e-3</span><span class="op">)</span><span class="pp">    </span><span class="co">// Error tolerances in velocity -- Use 1e-2 for low Oh</span></span>
+<span id="cb3-17">                         <span class="co">// and 1e-3 to 5e-3 for high Oh/moderate to high J</span></span>
+<span id="cb3-18"><span class="pp">#define D2Err </span><span class="op">(</span><span class="fl">1e-2</span><span class="op">)</span><span class="pp">     </span><span class="co">// Error tolerances in conformation inside the liquid</span></span>
+<span id="cb3-19"></span>
+<span id="cb3-20"><span class="co">// Domain size</span></span>
+<span id="cb3-21"><span class="pp">#define Ldomain </span><span class="dv">8</span><span class="pp"></span><span class="dv">66</span><span class="pp"></span></span>
+<span id="cb3-22"></span>
+<span id="cb3-23"><span class="co">// Boundary conditions - outflow on the right boundary</span></span>
+<span id="cb3-24">u<span class="op">.</span>n<span class="op">[</span>right<span class="op">]</span> <span class="op">=</span> neumann<span class="op">(</span><span class="fl">0.</span><span class="op">);</span></span>
+<span id="cb3-25">p<span class="op">[</span>right<span class="op">]</span> <span class="op">=</span> dirichlet<span class="op">(</span><span class="fl">0.</span><span class="op">);</span></span>
+<span id="cb3-26"></span>
+<span id="cb3-27"><span class="dt">int</span> MAXlevel<span class="op">;</span></span>
+<span id="cb3-28"><span class="dt">double</span> OhK<span class="op">,</span> Oha<span class="op">,</span> J<span class="op">,</span> Bond<span class="op">,</span> tmax<span class="op">;</span></span>
+<span id="cb3-29"><span class="dt">char</span> nameOut<span class="op">[</span><span class="dv">80</span><span class="op">],</span> dumpFile<span class="op">[</span><span class="dv">80</span><span class="op">],</span> logFile<span class="op">[</span><span class="dv">80</span><span class="op">];</span></span></code></pre></div></div>
                 <h3 id="main-function">Main Function</h3>
                 <p>The entry point of the simulation that initializes
                 parameters and starts the simulation run.</p>
@@ -536,15 +537,16 @@
 <span id="cb5-2">  n <span class="op">=</span> <span class="fl">0.4</span><span class="op">;</span></span>
 <span id="cb5-3">  OhK <span class="op">=</span> <span class="fl">0.001</span><span class="op">;</span></span>
 <span id="cb5-4">  J <span class="op">=</span> <span class="fl">2e-1</span><span class="op">;</span></span>
-<span id="cb5-5">  Bond <span class="op">=</span> <span class="fl">1e0</span><span class="op">;</span></span>
-<span id="cb5-6">  tmax <span class="op">=</span> <span class="fl">2.5e0</span><span class="op">;</span></span>
-<span id="cb5-7">  epsilon <span class="op">=</span> <span class="fl">1e-2</span><span class="op">;</span></span></code></pre></div></div>
+<span id="cb5-5">  Bond <span class="op">=</span> <span class="fl">1.1</span><span class="op">;</span></span>
+<span id="cb5-6">  G<span class="op">.</span>x <span class="op">=</span> <span class="op">-</span>Bond<span class="op">;</span></span>
+<span id="cb5-7">  tmax <span class="op">=</span> <span class="fl">2.5e0</span><span class="op">;</span></span>
+<span id="cb5-8">  epsilon <span class="op">=</span> <span class="fl">1e-2</span><span class="op">;</span></span></code></pre></div></div>
                 <h3 id="command-line-argument-parsing">Command Line
                 Argument Parsing</h3>
                 <p>To get parameters from the terminal, uncomment the
                 following block.</p>
                 <div class="code-block-container"><div class="code-block-container"><pre
-                class="sourceCode c"><code class="sourceCode c"><span id="cb6-1"><span class="co">// First ensure that all the variables were transferred properly from the </span></span>
+                class="sourceCode c"><code class="sourceCode c"><span id="cb6-1"><span class="co">// First ensure that all the variables were transferred properly from the</span></span>
 <span id="cb6-2"><span class="co">// terminal or job script.</span></span>
 <span id="cb6-3"><span class="cf">if</span> <span class="op">(</span>argc <span class="op">&lt;</span> <span class="dv">7</span><span class="op">)</span> <span class="op">{</span></span>
 <span id="cb6-4">  fprintf<span class="op">(</span>ferr<span class="op">,</span> <span class="st">&quot;Lack of command line arguments. Check! Need </span><span class="sc">%d</span><span class="st"> more &quot;</span></span>
